@@ -1,4 +1,4 @@
-﻿using Infrastructure.LiskShortener.Models;
+﻿using Infrastructure.LinkShortener.Models;
 using Microsoft.EntityFrameworkCore;
 
 public class LinkShortenerDbContext:DbContext

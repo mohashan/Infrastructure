@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.LiskShortener", "Infrastructure.LiskShortener\Infrastructure.LiskShortener.csproj", "{A6E52E3C-017F-479B-8218-F3701E6002B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.LinkShortener", "Infrastructure.LiskShortener\Infrastructure.LinkShortener.csproj", "{A6E52E3C-017F-479B-8218-F3701E6002B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.BaseTools", "Infrastructure.BaseTools\Infrastructure.BaseTools.csproj", "{FC5CB5AD-3732-4920-8295-7C429F3F304C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A6E52E3C-017F-479B-8218-F3701E6002B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6E52E3C-017F-479B-8218-F3701E6002B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6E52E3C-017F-479B-8218-F3701E6002B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC5CB5AD-3732-4920-8295-7C429F3F304C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC5CB5AD-3732-4920-8295-7C429F3F304C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC5CB5AD-3732-4920-8295-7C429F3F304C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC5CB5AD-3732-4920-8295-7C429F3F304C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

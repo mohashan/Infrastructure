@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.LiskShortener.Migrations
+namespace Infrastructure.LinkShortener.Migrations
 {
     [DbContext(typeof(LinkShortenerDbContext))]
     [Migration("20230417160503_InitialCreate")]

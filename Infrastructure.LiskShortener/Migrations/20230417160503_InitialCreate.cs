@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Infrastructure.LiskShortener.Migrations
+namespace Infrastructure.LinkShortener.Migrations
 {
     public partial class InitialCreate : Migration
     {

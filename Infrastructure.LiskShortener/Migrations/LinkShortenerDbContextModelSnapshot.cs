@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.LiskShortener.Migrations
+namespace Infrastructure.LinkShortener.Migrations
 {
     [DbContext(typeof(LinkShortenerDbContext))]
     partial class LinkShortenerDbContextModelSnapshot : ModelSnapshot

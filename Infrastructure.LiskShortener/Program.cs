@@ -1,4 +1,4 @@
-using Infrastructure.LiskShortener.Models;
+using Infrastructure.LinkShortener.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,7 +46,7 @@ app.MapGet("{shortCode}", (LinkShortenerDbContext db, HttpResponse response, str
 });
 
 app.MapPost("/", (LinkShortenerDbContext db, ShortLinkRequestDTO link) => {
-    if(!ShorterTools.IsValidUri(link.OriginalUrl))
+    if(!Infrastructure.BaseTools.UriTools.IsValidUri(link.OriginalUrl))
         return Results.BadRequest(link.OriginalUrl);
     ShortLink shortLink = new();
     shortLink.OriginalUrl = link.OriginalUrl.Trim('/');
@@ -68,15 +68,11 @@ app.Run();
 
 internal class ShorterTools
 {
+    const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
     internal static string GenerateShortCode()
     {
         var random = new Random();
-        const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         return new string(Enumerable.Range(1, 6).Select(_ => chars[random.Next(chars.Length)]).ToArray());
-    }
-
-    public static bool IsValidUri(string uri)
-    {
-        return Uri.TryCreate(uri, UriKind.Absolute, out Uri validatedUri);
     }
 }

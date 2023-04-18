@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Infrastructure.LiskShortener.Models
+namespace Infrastructure.LinkShortener.Models
 {
     public class ShortLink
     {

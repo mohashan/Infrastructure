@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.LiskShortener.Models
+﻿namespace Infrastructure.LinkShortener.Models
 {
     public class ShortLinkRequestDTO
     {
