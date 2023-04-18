@@ -1,20 +1,22 @@
+using AspNetCoreRateLimit;
 using Infrastructure.LinkShortener.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<LinkShortenerDbContext>(options =>
 {
-    options.UseSqlServer("Server=.;Database=LinkShortenerDb;Trusted_Connection=True;TrustServerCertificate=True;");
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 });
 
 var app = builder.Build();
+
 
 using (var scope = app.Services.CreateScope())
 {
