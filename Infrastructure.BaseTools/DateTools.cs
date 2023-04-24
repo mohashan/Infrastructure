@@ -15,9 +15,10 @@ namespace Infrastructure.BaseTools
             return epoch;
         }
 
-        public DateTime ConvertFromTimeStampToDateTime(long timestamp)
+        public DateTime ConvertFromTimeStampToDateTime(long timestamp,bool localTime = false)
         {
-            return new DateTime((timestamp * 10000) + 621355968000000000).ToLocalTime();
+            DateTime result = new DateTime((timestamp * 10000) + 621355968000000000);
+            return localTime?result.ToLocalTime():result;
         }
 
         public DateTime ShamsiToMiladi(string ShamsiDate)

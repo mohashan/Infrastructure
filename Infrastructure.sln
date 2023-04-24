@@ -5,7 +5,9 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.LinkShortener", "Infrastructure.LiskShortener\Infrastructure.LinkShortener.csproj", "{A6E52E3C-017F-479B-8218-F3701E6002B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.BaseTools", "Infrastructure.BaseTools\Infrastructure.BaseTools.csproj", "{FC5CB5AD-3732-4920-8295-7C429F3F304C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.BaseTools", "Infrastructure.BaseTools\Infrastructure.BaseTools.csproj", "{FC5CB5AD-3732-4920-8295-7C429F3F304C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.BaseTools.Test", "Infrastructure.BaseTools.Test\Infrastructure.BaseTools.Test.csproj", "{484C0432-4FB9-4D18-BE3F-4BA8E38A2A39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{FC5CB5AD-3732-4920-8295-7C429F3F304C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC5CB5AD-3732-4920-8295-7C429F3F304C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC5CB5AD-3732-4920-8295-7C429F3F304C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{484C0432-4FB9-4D18-BE3F-4BA8E38A2A39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{484C0432-4FB9-4D18-BE3F-4BA8E38A2A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{484C0432-4FB9-4D18-BE3F-4BA8E38A2A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{484C0432-4FB9-4D18-BE3F-4BA8E38A2A39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
