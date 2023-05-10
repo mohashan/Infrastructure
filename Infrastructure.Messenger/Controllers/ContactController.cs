@@ -17,33 +17,34 @@ namespace Infrastructure.Messenger.Controllers
             this.ctx = context;
         }
         [HttpGet]
-        public async Task<ActionResult> Index(int count, int pageNumber)
+        public async Task<ActionResult> Index(int count = 10, int pageNumber = 1)
         {
-            return Ok(await ctx.Contacts.Skip(count * (pageNumber - 1)).Take(count).AsNoTracking().ToListAsync());
+            return Ok((await ctx.Contacts.Skip(count * (pageNumber - 1)).Take(count).AsNoTracking().Select(c=>c.GetReadDto()).ToListAsync()));
         }
 
-        [HttpGet]
-        [Route("{id:int}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult> Details(int id)
         {
             var item = await ctx.Contacts.FindAsync(id);
             if (item == null)
                 return NotFound();
 
-            return Ok(item);
+            return Ok(item.GetReadDto());
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] Contact contact)
+        public async Task<ActionResult> Create([FromBody] ContactDto createContact)
         {
-            if (contact == null)
+            if (createContact == null)
             {
                 return BadRequest();
             }
+
+            var contact = new Contact().GetContact(createContact);
             try
             {
                 ctx.Contacts.Add(contact);
-                ctx.SaveChanges();
+                await ctx.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -52,35 +53,37 @@ namespace Infrastructure.Messenger.Controllers
             
 
 
-            return CreatedAtRoute(nameof(contact),
-                new {  id = contact.Id });
+            return CreatedAtAction(nameof(Details),
+                new {  id = contact.Id },contact.GetReadDto());
         }
 
         [HttpPatch("{id:int}")]
-        public ActionResult<Contact> PartiallyUpdate(int id, [FromBody] JsonPatchDocument<Contact> patchDoc)
+        public ActionResult<Contact> PartiallyUpdate(int id, [FromBody] JsonPatchDocument<ContactDto> patchDoc)
         {
             if (patchDoc == null)
             {
                 return BadRequest();
             }
 
-            var existingEntity = ctx.Contacts.Find(id);
+            var existingDto= ctx.Contacts.Find(id)?.GetDto();
 
-            if (existingEntity == null)
+            if (existingDto == null)
             {
                 return NotFound();
             }
 
-            patchDoc.ApplyTo(existingEntity);
+            patchDoc.ApplyTo(existingDto);
 
-            TryValidateModel(existingEntity);
+            var contact = new Contact().GetContact(existingDto);
+
+            TryValidateModel(contact);
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var updated = ctx.Contacts.Update(existingEntity);
+            ctx.Contacts.Update(contact);
 
             try
             {
@@ -93,12 +96,11 @@ namespace Infrastructure.Messenger.Controllers
             }
 
 
-            return Ok(existingEntity);
+            return Ok(contact);
         }
 
-        [HttpDelete]
-        [Route("{id:int}")]
-        public ActionResult RemoveFood(int id)
+        [HttpDelete("{id:int}")]
+        public ActionResult Remove(int id)
         {
             var contact = ctx.Contacts.Find(id);
 
@@ -108,7 +110,7 @@ namespace Infrastructure.Messenger.Controllers
             }
 
             contact.IsDeleted = true;
-
+            contact.DeleteDate = DateTime.Now;
             ctx.Entry<Contact>(contact).State = EntityState.Modified;
 
             try
@@ -125,9 +127,8 @@ namespace Infrastructure.Messenger.Controllers
             return NoContent();
         }
 
-        [HttpPut]
-        [Route("{id:int}")]
-        public ActionResult<Contact> Update(int id, [FromBody] Contact contact)
+        [HttpPut("{id:int}")]
+        public ActionResult<Contact> Update(int id, [FromBody] ContactDto contact)
         {
             if (contact == null)
             {
@@ -141,7 +142,9 @@ namespace Infrastructure.Messenger.Controllers
                 return NotFound();
             }
 
-            ctx.Entry<Contact>(contact).State = EntityState.Modified;
+            existingItem.GetContact(contact);
+
+            ctx.Entry<Contact>(existingItem).State = EntityState.Modified;
             try
             {
                 ctx.SaveChanges();
@@ -152,7 +155,7 @@ namespace Infrastructure.Messenger.Controllers
             }
 
 
-            return Ok(contact);
+            return Ok(existingItem.GetDto());
         }
     }
 }
