@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using AutoMapper;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace Infrastructure.Messenger.Models
 {
-    public class ContactFeatures:BaseEntity
+    public class ContactFeatures:BaseEntity<ContactFeatures,ContactFeaturesDto,ContactFeaturesReadDto>
     {
+
         [ForeignKey(nameof(Contact))]
         public int ContactId { get; set; }
         [JsonIgnore]
@@ -17,4 +19,7 @@ namespace Infrastructure.Messenger.Models
 
         public string Value { get; set; }
     }
+
+    public record ContactFeaturesDto():BaseDto();
+    public record ContactFeaturesReadDto(int Id): BaseReadDto(Id);
 }

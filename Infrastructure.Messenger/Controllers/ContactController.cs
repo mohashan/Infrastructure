@@ -1,4 +1,5 @@
-﻿using Infrastructure.Messenger.Models;
+﻿using AutoMapper.QueryableExtensions;
+using Infrastructure.Messenger.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,15 +12,19 @@ namespace Infrastructure.Messenger.Controllers
     public class ContactController : ControllerBase
     {
         private readonly MessengerDbContext ctx;
+        private readonly AutoMapper.IConfigurationProvider configurationProvider;
+        private readonly AutoMapper.Mapper mapper;
 
-        public ContactController(MessengerDbContext context)
+        public ContactController(MessengerDbContext context,AutoMapper.IConfigurationProvider configurationProvider)
         {
             this.ctx = context;
+            this.configurationProvider = configurationProvider;
+            mapper = new AutoMapper.Mapper(configurationProvider);
         }
         [HttpGet]
         public async Task<ActionResult> Index(int count = 10, int pageNumber = 1)
         {
-            return Ok((await ctx.Contacts.Skip(count * (pageNumber - 1)).Take(count).AsNoTracking().Select(c=>c.GetReadDto()).ToListAsync()));
+            return Ok(ctx.Contacts.Skip(count * (pageNumber - 1)).Take(count).AsNoTracking().ProjectTo(typeof(ContactReadDto),configurationProvider));
         }
 
         [HttpGet("{id}")]
@@ -29,9 +34,9 @@ namespace Infrastructure.Messenger.Controllers
             if (item == null)
                 return NotFound();
 
-            return Ok(item.GetReadDto());
+            return Ok(item.GetReadDto(mapper));
         }
-
+        
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] ContactDto createContact)
         {
@@ -40,7 +45,7 @@ namespace Infrastructure.Messenger.Controllers
                 return BadRequest();
             }
 
-            var contact = new Contact().GetContact(createContact);
+            var contact = new Contact().GetEntity(createContact,mapper);
             try
             {
                 ctx.Contacts.Add(contact);
@@ -54,7 +59,7 @@ namespace Infrastructure.Messenger.Controllers
 
 
             return CreatedAtAction(nameof(Details),
-                new {  id = contact.Id },contact.GetReadDto());
+                new {  id = contact.Id },contact.GetReadDto(mapper));
         }
 
         [HttpPatch("{id:int}")]
@@ -65,7 +70,7 @@ namespace Infrastructure.Messenger.Controllers
                 return BadRequest();
             }
 
-            var existingDto= ctx.Contacts.Find(id)?.GetDto();
+            var existingDto= ctx.Contacts.Find(id)?.GetDto(mapper);
 
             if (existingDto == null)
             {
@@ -74,7 +79,7 @@ namespace Infrastructure.Messenger.Controllers
 
             patchDoc.ApplyTo(existingDto);
 
-            var contact = new Contact().GetContact(existingDto);
+            var contact = new Contact().GetEntity(existingDto, mapper);
 
             TryValidateModel(contact);
 
@@ -142,7 +147,7 @@ namespace Infrastructure.Messenger.Controllers
                 return NotFound();
             }
 
-            existingItem.GetContact(contact);
+            existingItem.GetEntity(contact, mapper);
 
             ctx.Entry<Contact>(existingItem).State = EntityState.Modified;
             try
@@ -155,7 +160,7 @@ namespace Infrastructure.Messenger.Controllers
             }
 
 
-            return Ok(existingItem.GetDto());
+            return Ok(existingItem.GetDto(mapper));
         }
     }
 }

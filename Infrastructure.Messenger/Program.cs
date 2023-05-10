@@ -1,9 +1,10 @@
+using AutoMapper;
 using Infrastructure.Messenger.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddDbContext<MessengerDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
@@ -28,6 +29,8 @@ using (var scope = app.Services.CreateScope())
     var dataContext = scope.ServiceProvider.GetRequiredService<MessengerDbContext>();
     dataContext.Database.Migrate();
 }
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

@@ -12,12 +12,12 @@ namespace Infrastructure.Messenger.Models
         public DbSet<ContactType> ContactTypes { get; set; } = null!;
         public DbSet<Feature> Features { get; set; } = null!;
         public DbSet<ContactFeatures> ContactFeatures { get; set; } = null!;
-        public DbSet<Channels> Channels { get; set; } = null!;
+        public DbSet<Channel> Channels { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            /*
             modelBuilder.Entity<ContactType>().HasQueryFilter(c=>!c.IsDeleted).HasData(new ContactType[]
             {
                 new ContactType { Id=1,Name = "People" },
@@ -52,26 +52,26 @@ namespace Infrastructure.Messenger.Models
                 new Feature { Id= 6,Name = "MobileNumber" },
             });
 
-            modelBuilder.Entity<Channels>().HasQueryFilter(c => !c.IsDeleted).HasData(new Channels[]
+            modelBuilder.Entity<Channel>().HasQueryFilter(c => !c.IsDeleted).HasData(new Channel[]
             {
-                new Channels 
+                new Channel 
                 { 
                     Id=1,
                     Name = "SMS", 
                     FeatureId = 6,
                     EndPoint = "https://sms.MyServices.com/Send",
-                    ChannelRequestType=ChannelRequestType.POST,
+                    RequestType=ChannelRequestType.POST,
                     Body = @"{to:@MobileNumber,text:@Text}"
                 },
-                new Channels 
+                new Channel 
                 { 
                     Id = 2,
                     Name = "e-Mail" ,
                     FeatureId = 5,
                     EndPoint = "https://EMail.MyServices.com/Send",
-                    ChannelRequestType = ChannelRequestType.POST
+                    RequestType = ChannelRequestType.POST
                 },
-            });
+            });*/
         }
 
     }
