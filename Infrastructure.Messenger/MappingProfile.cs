@@ -13,10 +13,6 @@ namespace Infrastructure.Messenger
             var AllTypes = Assembly.GetExecutingAssembly().GetTypes();
             foreach (var type in AllTypes)
             {
-                if (type == typeof(Contact))
-                {
-
-                }
                 if (IsSubclassOfRawGeneric(typeof(BaseEntity<,,>), type) && typeof(BaseEntity<,,>) != type && type.BaseType?.GetGenericArguments().Count()==3)
                 {
                     var baseType = type.BaseType;
@@ -24,10 +20,9 @@ namespace Infrastructure.Messenger
                     var dtoType = baseType?.GetGenericArguments()[1];
                     var readDtoType = baseType?.GetGenericArguments()[2];
 
-                    CreateMap(entityType,readDtoType);
-                    
-                    CreateMap(dtoType,entityType);           
-                
+                    CreateMap(entityType,readDtoType).ReverseMap();
+                    CreateMap(readDtoType,dtoType).ReverseMap();
+                    CreateMap(dtoType,entityType).ReverseMap();                
                 }
             }
         }

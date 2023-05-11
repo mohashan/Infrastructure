@@ -20,6 +20,6 @@ namespace Infrastructure.Messenger.Models
         public string Value { get; set; }
     }
 
-    public record ContactFeaturesDto():BaseDto();
-    public record ContactFeaturesReadDto(int Id): BaseReadDto(Id);
+    public record ContactFeaturesDto(int ContactId, int FeatureId, string Value):BaseDto();
+    public record ContactFeaturesReadDto(int Id, int ContactId, int FeatureId, string Value) : BaseReadDto(Id);
 }

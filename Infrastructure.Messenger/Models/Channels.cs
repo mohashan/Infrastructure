@@ -16,26 +16,6 @@ namespace Infrastructure.Messenger.Models
         public Feature? Feature { get; set; }
         public string? Body { get; set; }
 
-        public Channel GetEntity(ChannelDto Dto)
-        {
-            Name = Dto.Name;
-            Description = Dto.Description;
-            EndPoint = Dto.Endpoint;
-            RequestType = Dto.RequestType;
-            FeatureId = Dto.FeatureId;
-            Body = Dto.Body;
-            return this;
-        }
-
-        public ChannelDto GetDto()
-        {
-            return new ChannelDto(Name, Description,EndPoint,RequestType,FeatureId, Body);
-        }
-
-        public ChannelReadDto GetReadDto()
-        {
-            return new ChannelReadDto(Id, Name, Description, EndPoint, RequestType, FeatureId, Body);
-        }
     }
 
     public record ChannelDto(string Name, string? Description, string Endpoint,ChannelRequestType RequestType, int FeatureId, string? Body):BaseDto();

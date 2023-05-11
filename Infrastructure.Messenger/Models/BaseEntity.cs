@@ -18,6 +18,7 @@ namespace Infrastructure.Messenger.Models
         public DateTime InsertDate { get; set; } = DateTime.Now;
         [JsonIgnore]
         public DateTime? DeleteDate { get; set; }
+
         [JsonIgnore]
         public bool IsDeleted { get; set; } = false;
 

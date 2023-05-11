@@ -17,7 +17,7 @@ namespace Infrastructure.Messenger.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            /*
+            
             modelBuilder.Entity<ContactType>().HasQueryFilter(c=>!c.IsDeleted).HasData(new ContactType[]
             {
                 new ContactType { Id=1,Name = "People" },
@@ -71,7 +71,7 @@ namespace Infrastructure.Messenger.Models
                     EndPoint = "https://EMail.MyServices.com/Send",
                     RequestType = ChannelRequestType.POST
                 },
-            });*/
+            });
         }
 
     }

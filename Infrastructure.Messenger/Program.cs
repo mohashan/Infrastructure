@@ -10,8 +10,6 @@ builder.Services.AddDbContext<MessengerDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 });
 
-
-
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -34,6 +32,7 @@ using (var scope = app.Services.CreateScope())
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }

@@ -19,23 +19,6 @@ namespace Infrastructure.Messenger.Models
         [JsonIgnore]
         public virtual ICollection<Channel> Channels { get; set; }
 
-        public Feature GetEntity(FeatureDto featureDto)
-        {
-            Name = featureDto.Name;
-            Description = featureDto.Description;
-            DataType = featureDto.DataType;
-            return this;
-        }
-
-        public FeatureDto GetDto()
-        {
-            return new FeatureDto(DataType, Name, Description);
-        }
-
-        public FeatureReadDto GetReadDto()
-        {
-            return new FeatureReadDto(Id, DataType, Name, Description);
-        }
 
     }
 
