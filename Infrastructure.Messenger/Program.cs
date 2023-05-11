@@ -32,6 +32,7 @@ using (var scope = app.Services.CreateScope())
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    // To Check Exception Page >> "swagger/v1/swagger.json"
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
