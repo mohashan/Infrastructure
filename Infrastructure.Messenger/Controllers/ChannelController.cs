@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Messenger.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Infrastructure.Messenger.Controllers
 {

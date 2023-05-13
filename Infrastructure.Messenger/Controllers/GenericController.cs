@@ -42,7 +42,7 @@ namespace Infrastructure.Messenger.Controllers
         }
         
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] TDto dto)
+        public virtual async Task<ActionResult> Create([FromBody] TDto dto)
         {
             if (dto == null)
             {

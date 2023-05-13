@@ -12,7 +12,6 @@ namespace Infrastructure.Messenger.Models
         }
         public string DataType { get; set; } = typeof(string)?.FullName;
 
-        public string Name { get; set; }
         public string? Description { get; set; }
         [JsonIgnore]
         public virtual ICollection<ContactFeatures> ContactFeatures { get; set; }
@@ -22,7 +21,7 @@ namespace Infrastructure.Messenger.Models
 
     }
 
-    public record FeatureDto(string DataType, string Name, string? Description) : BaseDto();
-    public record FeatureReadDto(int Id, string DataType, string Name, string? Description) : BaseReadDto(Id);
+    public record FeatureDto(string DataType, string title, string? Description) : BaseDto(title);
+    public record FeatureReadDto(int Id, string DataType, string title, string? Description, DateTime InsertDate) : BaseReadDto(Id, title, InsertDate);
 
 }

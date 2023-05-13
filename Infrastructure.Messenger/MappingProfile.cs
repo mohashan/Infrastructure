@@ -10,21 +10,20 @@ namespace Infrastructure.Messenger
     {
         public MappingProfiles()
         {
-            var AllTypes = Assembly.GetExecutingAssembly().GetTypes();
-            foreach (var type in AllTypes)
+            Assembly.GetExecutingAssembly().GetTypes().ToList().ForEach(type =>
             {
-                if (IsSubclassOfRawGeneric(typeof(BaseEntity<,,>), type) && typeof(BaseEntity<,,>) != type && type.BaseType?.GetGenericArguments().Count()==3)
+                if (IsSubclassOfRawGeneric(typeof(BaseEntity<,,>), type) && typeof(BaseEntity<,,>) != type && type.BaseType?.GetGenericArguments().Count() == 3)
                 {
                     var baseType = type.BaseType;
                     var entityType = baseType?.GetGenericArguments()[0];
                     var dtoType = baseType?.GetGenericArguments()[1];
                     var readDtoType = baseType?.GetGenericArguments()[2];
 
-                    CreateMap(entityType,readDtoType).ReverseMap();
-                    CreateMap(readDtoType,dtoType).ReverseMap();
-                    CreateMap(dtoType,entityType).ReverseMap();                
+                    CreateMap(entityType, readDtoType).ReverseMap();
+                    CreateMap(readDtoType, dtoType).ReverseMap();
+                    CreateMap(dtoType, entityType).ReverseMap();
                 }
-            }
+            });
         }
         static bool IsSubclassOfRawGeneric(Type generic, Type toCheck)
         {

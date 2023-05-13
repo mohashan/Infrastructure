@@ -6,24 +6,20 @@ namespace Infrastructure.Messenger.Models
 {
     public class Channel:BaseEntity<Channel,ChannelDto,ChannelReadDto>
     {
-        public string Name { get; set; }
         public string? Description { get; set; }
         public string EndPoint { get; set; }
-        public ChannelRequestType RequestType { get; set; }
         [ForeignKey(nameof(Feature))]
         public int FeatureId { get; set; }
         [JsonIgnore]
         public Feature? Feature { get; set; }
-        public string? Body { get; set; }
+
+        public string? HttpRequestBody { get; set; }
+
+        public virtual ICollection<Message> Messages { get; set; }
 
     }
 
-    public record ChannelDto(string Name, string? Description, string Endpoint,ChannelRequestType RequestType, int FeatureId, string? Body):BaseDto();
-    public record ChannelReadDto(int Id, string Name, string? Description, string Endpoint,ChannelRequestType RequestType, int FeatureId, string? Body):BaseReadDto(Id);
+    public record ChannelDto(string? title, string? Description, string Endpoint, int FeatureId,string HttpRequestBody) :BaseDto(title);
+    public record ChannelReadDto(int Id, string title, string? Description, string Endpoint, int FeatureId, string HttpRequestBody,DateTime InsertDate) :BaseReadDto(Id, title, InsertDate);
 
-    public enum ChannelRequestType
-    {
-        GET,
-        POST,
-    }
 }

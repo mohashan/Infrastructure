@@ -19,7 +19,6 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-
 using (var scope = app.Services.CreateScope())
 {
     // dotnet ef migrations add InitialCreate --output-dir Migrations

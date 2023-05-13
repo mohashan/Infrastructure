@@ -15,6 +15,9 @@ namespace Infrastructure.Messenger.Models
         
         [Key]
         public int Id { get; set; }
+
+        public string? Title { get; set; }
+
         public DateTime InsertDate { get; set; } = DateTime.Now;
         [JsonIgnore]
         public DateTime? DeleteDate { get; set; }
@@ -38,6 +41,6 @@ namespace Infrastructure.Messenger.Models
         }
     }
 
-    public record BaseDto();
-    public record BaseReadDto(int Id);
+    public record BaseDto(string? title);
+    public record BaseReadDto(int Id,string? title,DateTime InsertDate);
 }

@@ -8,33 +8,20 @@ namespace Infrastructure.Messenger.Models
     public class Contact:BaseEntity<Contact,ContactDto,ContactReadDto>
     {
 
-        public string Name { get; set; }
-
         [ForeignKey(nameof(ContactType))]
         public int TypeId { get; set; }
         [JsonIgnore]
         public virtual ContactType ContactType { get; set; }
         [JsonIgnore]
-        public virtual ICollection<ContactFeatures> ContactFeatures { get; set; }
+        public virtual ICollection<ContactFeatures>? ContactFeatures { get; set; }
 
-        //public Contact GetEntity(ContactDto contact)
-        //{
-        //    Name = contact.Name;
-        //    TypeId = contact.TypeId;
-        //    return this;
-        //}
+        [ForeignKey(nameof(ContactGroup))]
+        public int? ContactGroupId { get; set; }
+        public virtual ContactGroup? ContactGroup { get; set; }
 
-        //public ContactDto GetDto()
-        //{
-        //    return new ContactDto(Name, TypeId);
-        //}
-
-        //public ContactReadDto GetReadDto()
-        //{
-        //    return new ContactReadDto(Id,Name, TypeId);
-        //}
+        public virtual ICollection<Message> Messages { get; set; }
     }
 
-    public record ContactDto(string Name,int TypeId):BaseDto();
-    public record ContactReadDto(int Id, string Name,int TypeId):BaseReadDto(Id);
+    public record ContactDto(string? title,int TypeId,int? ContactGroupId):BaseDto(title);
+    public record ContactReadDto(int Id, string? title, int TypeId, int? ContactGroupId, DateTime InsertDate) : BaseReadDto(Id, title, InsertDate);
 }
