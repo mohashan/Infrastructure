@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using AutoMapper.Features;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
+using System.Threading.Channels;
 
 namespace Infrastructure.Messenger.Models
 {
@@ -19,9 +22,30 @@ namespace Infrastructure.Messenger.Models
         public string? Response { get; set; }
 
         public string SentText { get; set; }
+
+        public void FillSentText(string TemplateText,string ChannelBodyRequest, string recipient)
+        {
+            var body = MessageContent(TemplateText);
+            this.SentText = ChannelBodyRequest.Replace("@text", body).Replace("@to", recipient);
+        }
+
+        public string MessageContent(string TemplateText)
+        {
+            StringBuilder MessageText = new StringBuilder(TemplateText);
+            string[] parameters = Parameters?.Split('|') ?? new string[] { string.Empty };
+
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                MessageText.Replace($"@param{i}", parameters[i]);
+            }
+
+            return MessageText.ToString();
+        }
     }
-    public record MessageDto(string? title, int ChannelId, int ContactId, int TemplateId, string? Parameters, MessageState State) : BaseDto(title);
-    public record MessageReadDto(int Id,string? title, int ChannelId, int ContactId, int TemplateId, string? Parameters, MessageState State,DateTime InsertDate) : BaseReadDto(Id, title, InsertDate);
+    public record MessageDto(string? title, int ChannelId, int ContactId, int TemplateId, string? Parameters, MessageState State,string? Response,string SentText) 
+        : BaseDto(title);
+    public record MessageReadDto(int Id,string? title, int ChannelId, int ContactId, int TemplateId, string? Parameters, MessageState State,DateTime InsertDate, string? Response, string SentText) 
+        : BaseReadDto(Id, title, InsertDate);
 
     public enum MessageState
     {

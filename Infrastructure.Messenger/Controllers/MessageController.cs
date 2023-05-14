@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Infrastructure.BaseTools;
 using Infrastructure.Messenger.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,9 +9,11 @@ namespace Infrastructure.Messenger.Controllers
 {
     public class MessageController : GenericController<Message, MessageDto, MessageReadDto>
     {
+        private readonly IHttpRequester httpClient;
 
-        public MessageController(MessengerDbContext ctx, AutoMapper.IConfigurationProvider cfg) : base(ctx, cfg)
+        public MessageController(IHttpRequester httpClient, MessengerDbContext ctx, AutoMapper.IConfigurationProvider cfg) : base(ctx, cfg)
         {
+            this.httpClient = httpClient;
         }
 
         [HttpPost]
@@ -44,46 +47,20 @@ namespace Infrastructure.Messenger.Controllers
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri(channel.EndPoint);
-
-                StringBuilder MessageText = new StringBuilder(template.Body);
-                string[] parameters = dto.Parameters?.Split('|') ?? new string[] { string.Empty };
-                var RequestBody = ctx.Channels.FirstOrDefault(c => c.Id == dto.ChannelId);
-                for (int i = 0; i < parameters.Length; i++)
-                {
-                    MessageText.Replace($"@param{i}", parameters[i]);
-                }
-                HttpResponseMessage response = null;
+                
                 string result = string.Empty;
                 try
                 {
-                    entity.SentText = channel.HttpRequestBody
-                                .Replace("@text", MessageText.ToString())
-                                .Replace("@to", feature.Value);
-                    response = await client.PostAsync("",
-                        new StringContent(entity.SentText, Encoding.UTF8));
-                    if (response == null)
-                    {
-                        throw new Exception("Response is null");
-                    }
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        throw new Exception($"Status code Error : {await response.Content.ReadAsStringAsync()}");
-                    }
+                    entity.FillSentText(template.Body, channel.HttpRequestBody??string.Empty ,feature.Value); ;
 
-
+                    entity.Response = await httpClient.SendAsync(new Uri(channel.EndPoint), HttpMethod.Post, entity.SentText,channel.AuthorizationToken);
+                    
                     entity.State = MessageState.Sent;
-
-                    entity.Response = await response?.Content?.ReadAsStringAsync();
                 }
                 catch (Exception ex)
                 {
-                    entity.State = MessageState.Error;
                     entity.Response = ex.Message;
-                }
-                finally
-                {
-                    if (response != null)
-                        response.Dispose();
+                    entity.State = MessageState.Error;
                 }
 
             }

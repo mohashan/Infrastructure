@@ -30,6 +30,9 @@ namespace Infrastructure.Messenger.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("AuthorizationToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
 
@@ -68,7 +71,7 @@ namespace Infrastructure.Messenger.Migrations
                             EndPoint = "https://sms.MyServices.com/Send",
                             FeatureId = 6,
                             HttpRequestBody = "{to:'@to',text:'@text'}",
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8691),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9995),
                             IsDeleted = false,
                             Title = "SMS"
                         },
@@ -78,7 +81,7 @@ namespace Infrastructure.Messenger.Migrations
                             EndPoint = "https://EMail.MyServices.com/Send",
                             FeatureId = 5,
                             HttpRequestBody = "{to:'@to',text:'@text'}",
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8693),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9997),
                             IsDeleted = false,
                             Title = "e-Mail"
                         });
@@ -123,7 +126,7 @@ namespace Infrastructure.Messenger.Migrations
                         {
                             Id = 1,
                             ContactGroupId = 1,
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8443),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9639),
                             IsDeleted = false,
                             Title = "Admin",
                             TypeId = 1
@@ -131,7 +134,7 @@ namespace Infrastructure.Messenger.Migrations
                         new
                         {
                             Id = 2,
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8445),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9641),
                             IsDeleted = false,
                             Title = "SupportUser",
                             TypeId = 1
@@ -182,7 +185,7 @@ namespace Infrastructure.Messenger.Migrations
                             Id = 1,
                             ContactId = 1,
                             FeatureId = 1,
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8520),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9718),
                             IsDeleted = false,
                             Title = "FullName",
                             Value = "Administrator"
@@ -192,7 +195,7 @@ namespace Infrastructure.Messenger.Migrations
                             Id = 2,
                             ContactId = 1,
                             FeatureId = 5,
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8522),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9721),
                             IsDeleted = false,
                             Title = "e-Mail",
                             Value = "Admin@MyServices.com"
@@ -202,7 +205,7 @@ namespace Infrastructure.Messenger.Migrations
                             Id = 3,
                             ContactId = 1,
                             FeatureId = 6,
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8523),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9722),
                             IsDeleted = false,
                             Title = "MobileNumber",
                             Value = "+9898765432101"
@@ -212,7 +215,7 @@ namespace Infrastructure.Messenger.Migrations
                             Id = 4,
                             ContactId = 2,
                             FeatureId = 1,
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8525),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9722),
                             IsDeleted = false,
                             Title = "FullName",
                             Value = "Support User"
@@ -222,7 +225,7 @@ namespace Infrastructure.Messenger.Migrations
                             Id = 5,
                             ContactId = 2,
                             FeatureId = 5,
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8526),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9723),
                             IsDeleted = false,
                             Title = "e-Mail",
                             Value = "Support@MyServices.com"
@@ -232,7 +235,7 @@ namespace Infrastructure.Messenger.Migrations
                             Id = 6,
                             ContactId = 2,
                             FeatureId = 6,
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8526),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9724),
                             IsDeleted = false,
                             Title = "MobileNumber",
                             Value = "+9898765432102"
@@ -267,7 +270,7 @@ namespace Infrastructure.Messenger.Migrations
                         new
                         {
                             Id = 1,
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8353),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9548),
                             IsDeleted = false,
                             Title = "G1"
                         });
@@ -301,21 +304,21 @@ namespace Infrastructure.Messenger.Migrations
                         new
                         {
                             Id = 1,
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8108),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9329),
                             IsDeleted = false,
                             Title = "People"
                         },
                         new
                         {
                             Id = 2,
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8118),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9338),
                             IsDeleted = false,
                             Title = "Service"
                         },
                         new
                         {
                             Id = 3,
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8119),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9339),
                             IsDeleted = false,
                             Title = "Device"
                         });
@@ -357,7 +360,7 @@ namespace Infrastructure.Messenger.Migrations
                         {
                             Id = 1,
                             DataType = "System.String",
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8603),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9881),
                             IsDeleted = false,
                             Title = "FullName"
                         },
@@ -365,7 +368,7 @@ namespace Infrastructure.Messenger.Migrations
                         {
                             Id = 2,
                             DataType = "System.String",
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8606),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9883),
                             IsDeleted = false,
                             Title = "NationalCode"
                         },
@@ -373,7 +376,7 @@ namespace Infrastructure.Messenger.Migrations
                         {
                             Id = 3,
                             DataType = "System.String",
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8607),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9884),
                             IsDeleted = false,
                             Title = "Address"
                         },
@@ -381,7 +384,7 @@ namespace Infrastructure.Messenger.Migrations
                         {
                             Id = 4,
                             DataType = "System.String",
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8608),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9885),
                             IsDeleted = false,
                             Title = "Gender"
                         },
@@ -389,7 +392,7 @@ namespace Infrastructure.Messenger.Migrations
                         {
                             Id = 5,
                             DataType = "System.String",
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8609),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9886),
                             IsDeleted = false,
                             Title = "e-Mail"
                         },
@@ -397,7 +400,7 @@ namespace Infrastructure.Messenger.Migrations
                         {
                             Id = 6,
                             DataType = "System.String",
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8610),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9887),
                             IsDeleted = false,
                             Title = "MobileNumber"
                         });
@@ -430,6 +433,10 @@ namespace Infrastructure.Messenger.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Response")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SentText")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("State")
@@ -485,7 +492,7 @@ namespace Infrastructure.Messenger.Migrations
                         {
                             Id = 1,
                             Body = "Server @param0 has a problem: @param1",
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8769),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 920, DateTimeKind.Local).AddTicks(75),
                             IsDeleted = false,
                             Title = "Server_Monitoring"
                         },
@@ -493,7 +500,7 @@ namespace Infrastructure.Messenger.Migrations
                         {
                             Id = 2,
                             Body = "Service @param0 has a problem: @param1",
-                            InsertDate = new DateTime(2023, 5, 13, 19, 45, 27, 925, DateTimeKind.Local).AddTicks(8772),
+                            InsertDate = new DateTime(2023, 5, 14, 16, 5, 16, 920, DateTimeKind.Local).AddTicks(76),
                             IsDeleted = false,
                             Title = "Service_Monitoring"
                         });

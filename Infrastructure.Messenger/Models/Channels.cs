@@ -17,9 +17,10 @@ namespace Infrastructure.Messenger.Models
 
         public virtual ICollection<Message> Messages { get; set; }
 
+        public string? AuthorizationToken { get; set; }
     }
 
     public record ChannelDto(string? title, string? Description, string Endpoint, int FeatureId,string HttpRequestBody) :BaseDto(title);
-    public record ChannelReadDto(int Id, string title, string? Description, string Endpoint, int FeatureId, string HttpRequestBody,DateTime InsertDate) :BaseReadDto(Id, title, InsertDate);
+    public record ChannelReadDto(int Id, string? title, string? Description, string Endpoint, int FeatureId, string HttpRequestBody,DateTime InsertDate) :BaseReadDto(Id, title, InsertDate);
 
 }
