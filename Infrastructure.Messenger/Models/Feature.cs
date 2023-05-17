@@ -14,7 +14,7 @@ namespace Infrastructure.Messenger.Models
 
         public string? Description { get; set; }
         [JsonIgnore]
-        public virtual ICollection<ContactFeatures> ContactFeatures { get; set; }
+        public virtual ICollection<ContactFeature> ContactFeatures { get; set; }
         [JsonIgnore]
         public virtual ICollection<Channel> Channels { get; set; }
 

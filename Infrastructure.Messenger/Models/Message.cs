@@ -1,11 +1,13 @@
 ﻿using AutoMapper.Features;
+using Infrastructure.BaseTools;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Channels;
 
 namespace Infrastructure.Messenger.Models
 {
-    public class Message:BaseEntity<Message,MessageDto,MessageReadDto>
+    public class Message : BaseEntity<Message, MessageDto, MessageReadDto>
     {
         [ForeignKey(nameof(Channel))]
         public int ChannelId { get; set; }
@@ -23,10 +25,10 @@ namespace Infrastructure.Messenger.Models
 
         public string SentText { get; set; }
 
-        public void FillSentText(string TemplateText,string ChannelBodyRequest, string recipient)
+        public void FillSentText(string TemplateText, string ChannelBodyRequest, string recipient)
         {
             var body = MessageContent(TemplateText);
-            this.SentText = ChannelBodyRequest.Replace("@text", body).Replace("@to", recipient);
+            SentText = ChannelBodyRequest.Replace("@text", body).Replace("@to", recipient);
         }
 
         public string MessageContent(string TemplateText)
@@ -41,10 +43,12 @@ namespace Infrastructure.Messenger.Models
 
             return MessageText.ToString();
         }
+
+        
     }
-    public record MessageDto(string? title, int ChannelId, int ContactId, int TemplateId, string? Parameters, MessageState State,string? Response,string SentText) 
+    public record MessageDto(string? title, int ChannelId, int ContactId, int TemplateId, string? Parameters)
         : BaseDto(title);
-    public record MessageReadDto(int Id,string? title, int ChannelId, int ContactId, int TemplateId, string? Parameters, MessageState State,DateTime InsertDate, string? Response, string SentText) 
+    public record MessageReadDto(int Id, string? title, int ChannelId, int ContactId, int TemplateId, string? Parameters, MessageState State, DateTime InsertDate, string? Response, string SentText)
         : BaseReadDto(Id, title, InsertDate);
 
     public enum MessageState

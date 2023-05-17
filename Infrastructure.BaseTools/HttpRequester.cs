@@ -29,7 +29,7 @@ namespace Infrastructure.BaseTools
                 Content = content,
                 Method = method,
             };
-
+            httpClient.BaseAddress = uri;
             request.Headers.Add("Accept", "application/json");
 
             if (AuthorizationToken != null)

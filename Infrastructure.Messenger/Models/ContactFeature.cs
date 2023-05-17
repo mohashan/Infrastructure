@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Infrastructure.Messenger.Models
 {
-    public class ContactFeatures:BaseEntity<ContactFeatures,ContactFeaturesDto,ContactFeaturesReadDto>
+    public class ContactFeature:BaseEntity<ContactFeature,ContactFeatureDto,ContactFeatureReadDto>
     {
 
         [ForeignKey(nameof(Contact))]
@@ -20,6 +20,6 @@ namespace Infrastructure.Messenger.Models
         public string Value { get; set; }
     }
 
-    public record ContactFeaturesDto(string? title,int ContactId, int FeatureId, string Value):BaseDto(title);
-    public record ContactFeaturesReadDto(int Id, string? title, int ContactId, int FeatureId, string Value,DateTime InsertDate) : BaseReadDto(Id,title,InsertDate);
+    public record ContactFeatureDto(string? title,int ContactId, int FeatureId, string Value):BaseDto(title);
+    public record ContactFeatureReadDto(int Id, string? title, int ContactId, int FeatureId, string Value,DateTime InsertDate) : BaseReadDto(Id,title,InsertDate);
 }

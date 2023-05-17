@@ -9,17 +9,15 @@ namespace Infrastructure.Messenger.Models
     {
 
         [ForeignKey(nameof(ContactType))]
-        public int TypeId { get; set; }
+        public int ContactTypeId { get; set; }
         [JsonIgnore]
         public virtual ContactType ContactType { get; set; }
         [JsonIgnore]
-        public virtual ICollection<ContactFeatures>? ContactFeatures { get; set; }
+        public virtual ICollection<ContactFeature>? ContactFeatures { get; set; }
 
-        [ForeignKey(nameof(ContactGroup))]
-        public int? ContactGroupId { get; set; }
-        public virtual ContactGroup? ContactGroup { get; set; }
+        public virtual ICollection<ContactGroup>? ContactGroup { get; set; }
 
-        public virtual ICollection<Message> Messages { get; set; }
+        public virtual ICollection<Message>? Messages { get; set; }
     }
 
     public record ContactDto(string? title,int TypeId,int? ContactGroupId):BaseDto(title);

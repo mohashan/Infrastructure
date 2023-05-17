@@ -25,14 +25,14 @@ namespace Infrastructure.Messenger.Controllers
         }
 
         [HttpPost("{FeatureId:int}/[action]/{ContactId:int}")]
-        public async Task<ActionResult> SetByContactId(int FeatureId, int ContactId, [FromBody] ContactFeaturesDto dto)
+        public async Task<ActionResult> SetByContactId(int FeatureId, int ContactId, [FromBody] ContactFeatureDto dto)
         {
             var existEntity = await ctx.ContactFeatures.Include(c => c.Feature).
                                 FirstOrDefaultAsync(c => c.FeatureId == FeatureId && c.ContactId == ContactId);
-            ContactFeatures entity = new ContactFeatures().GetEntity(dto,mapper);
+            ContactFeature entity = new ContactFeature().GetEntity(dto,mapper);
             if (existEntity == null)
             {
-                existEntity = new ContactFeatures
+                existEntity = new ContactFeature
                 {
                     ContactId = ContactId,
                     FeatureId = FeatureId,

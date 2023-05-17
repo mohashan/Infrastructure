@@ -10,22 +10,6 @@ namespace Infrastructure.Messenger.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ContactGroups",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ContactGroups", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ContactTypes",
                 columns: table => new
                 {
@@ -60,6 +44,22 @@ namespace Infrastructure.Messenger.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Groups",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Groups", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Templates",
                 columns: table => new
                 {
@@ -82,8 +82,7 @@ namespace Infrastructure.Messenger.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TypeId = table.Column<int>(type: "int", nullable: false),
-                    ContactGroupId = table.Column<int>(type: "int", nullable: true),
+                    ContactTypeId = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -93,13 +92,8 @@ namespace Infrastructure.Messenger.Migrations
                 {
                     table.PrimaryKey("PK_Contacts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Contacts_ContactGroups_ContactGroupId",
-                        column: x => x.ContactGroupId,
-                        principalTable: "ContactGroups",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Contacts_ContactTypes_TypeId",
-                        column: x => x.TypeId,
+                        name: "FK_Contacts_ContactTypes_ContactTypeId",
+                        column: x => x.ContactTypeId,
                         principalTable: "ContactTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -164,6 +158,36 @@ namespace Infrastructure.Messenger.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ContactGroups",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ContactId = table.Column<int>(type: "int", nullable: false),
+                    GroupId = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContactGroups", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ContactGroups_Contacts_ContactId",
+                        column: x => x.ContactId,
+                        principalTable: "Contacts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ContactGroups_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Messages",
                 columns: table => new
                 {
@@ -205,18 +229,13 @@ namespace Infrastructure.Messenger.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "ContactGroups",
-                columns: new[] { "Id", "DeleteDate", "InsertDate", "IsDeleted", "Title" },
-                values: new object[] { 1, null, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9548), false, "G1" });
-
-            migrationBuilder.InsertData(
                 table: "ContactTypes",
                 columns: new[] { "Id", "DeleteDate", "InsertDate", "IsDeleted", "Title" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9329), false, "People" },
-                    { 2, null, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9338), false, "Service" },
-                    { 3, null, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9339), false, "Device" }
+                    { 1, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(5283), false, "People" },
+                    { 2, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(5294), false, "Service" },
+                    { 3, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(5295), false, "Device" }
                 });
 
             migrationBuilder.InsertData(
@@ -224,21 +243,26 @@ namespace Infrastructure.Messenger.Migrations
                 columns: new[] { "Id", "DataType", "DeleteDate", "Description", "InsertDate", "IsDeleted", "Title" },
                 values: new object[,]
                 {
-                    { 1, "System.String", null, null, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9881), false, "FullName" },
-                    { 2, "System.String", null, null, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9883), false, "NationalCode" },
-                    { 3, "System.String", null, null, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9884), false, "Address" },
-                    { 4, "System.String", null, null, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9885), false, "Gender" },
-                    { 5, "System.String", null, null, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9886), false, "e-Mail" },
-                    { 6, "System.String", null, null, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9887), false, "MobileNumber" }
+                    { 1, "System.String", null, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7537), false, "FullName" },
+                    { 2, "System.String", null, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7541), false, "NationalCode" },
+                    { 3, "System.String", null, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7542), false, "Address" },
+                    { 4, "System.String", null, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7593), false, "Gender" },
+                    { 5, "System.String", null, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7595), false, "e-Mail" },
+                    { 6, "System.String", null, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7596), false, "MobileNumber" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Groups",
+                columns: new[] { "Id", "DeleteDate", "InsertDate", "IsDeleted", "Title" },
+                values: new object[] { 1, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(5496), false, "G1" });
 
             migrationBuilder.InsertData(
                 table: "Templates",
                 columns: new[] { "Id", "Body", "DeleteDate", "InsertDate", "IsDeleted", "Title" },
                 values: new object[,]
                 {
-                    { 1, "Server @param0 has a problem: @param1", null, new DateTime(2023, 5, 14, 16, 5, 16, 920, DateTimeKind.Local).AddTicks(75), false, "Server_Monitoring" },
-                    { 2, "Service @param0 has a problem: @param1", null, new DateTime(2023, 5, 14, 16, 5, 16, 920, DateTimeKind.Local).AddTicks(76), false, "Service_Monitoring" }
+                    { 1, "Server @param0 has a problem: @param1", null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7784), false, "Server_Monitoring" },
+                    { 2, "Service @param0 has a problem: @param1", null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7785), false, "Service_Monitoring" }
                 });
 
             migrationBuilder.InsertData(
@@ -246,17 +270,17 @@ namespace Infrastructure.Messenger.Migrations
                 columns: new[] { "Id", "AuthorizationToken", "DeleteDate", "Description", "EndPoint", "FeatureId", "HttpRequestBody", "InsertDate", "IsDeleted", "Title" },
                 values: new object[,]
                 {
-                    { 1, null, null, null, "https://sms.MyServices.com/Send", 6, "{to:'@to',text:'@text'}", new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9995), false, "SMS" },
-                    { 2, null, null, null, "https://EMail.MyServices.com/Send", 5, "{to:'@to',text:'@text'}", new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9997), false, "e-Mail" }
+                    { 1, null, null, null, "https://sms.MyServices.com/Send", 6, "{to:'@to',text:'@text'}", new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7700), false, "SMS" },
+                    { 2, null, null, null, "https://EMail.MyServices.com/Send", 5, "{to:'@to',text:'@text'}", new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7703), false, "e-Mail" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Contacts",
-                columns: new[] { "Id", "ContactGroupId", "DeleteDate", "InsertDate", "IsDeleted", "Title", "TypeId" },
+                columns: new[] { "Id", "ContactTypeId", "DeleteDate", "InsertDate", "IsDeleted", "Title" },
                 values: new object[,]
                 {
-                    { 1, 1, null, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9639), false, "Admin", 1 },
-                    { 2, null, null, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9641), false, "SupportUser", 1 }
+                    { 1, 1, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(5587), false, "Admin" },
+                    { 2, 1, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(5589), false, "SupportUser" }
                 });
 
             migrationBuilder.InsertData(
@@ -264,12 +288,21 @@ namespace Infrastructure.Messenger.Migrations
                 columns: new[] { "Id", "ContactId", "DeleteDate", "FeatureId", "InsertDate", "IsDeleted", "Title", "Value" },
                 values: new object[,]
                 {
-                    { 1, 1, null, 1, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9718), false, "FullName", "Administrator" },
-                    { 2, 1, null, 5, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9721), false, "e-Mail", "Admin@MyServices.com" },
-                    { 3, 1, null, 6, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9722), false, "MobileNumber", "+9898765432101" },
-                    { 4, 2, null, 1, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9722), false, "FullName", "Support User" },
-                    { 5, 2, null, 5, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9723), false, "e-Mail", "Support@MyServices.com" },
-                    { 6, 2, null, 6, new DateTime(2023, 5, 14, 16, 5, 16, 919, DateTimeKind.Local).AddTicks(9724), false, "MobileNumber", "+9898765432102" }
+                    { 1, 1, null, 1, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(6760), false, "FullName", "Administrator" },
+                    { 2, 1, null, 5, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(6764), false, "e-Mail", "Admin@MyServices.com" },
+                    { 3, 1, null, 6, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(6765), false, "MobileNumber", "+9898765432101" },
+                    { 4, 2, null, 1, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(6766), false, "FullName", "Support User" },
+                    { 5, 2, null, 5, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(6766), false, "e-Mail", "Support@MyServices.com" },
+                    { 6, 2, null, 6, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(6767), false, "MobileNumber", "+9898765432102" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ContactGroups",
+                columns: new[] { "Id", "ContactId", "DeleteDate", "GroupId", "InsertDate", "IsDeleted", "Title" },
+                values: new object[,]
+                {
+                    { 1, 1, null, 1, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(5669), false, "Admin" },
+                    { 2, 2, null, 1, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(5671), false, "SupportUser" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -278,9 +311,10 @@ namespace Infrastructure.Messenger.Migrations
                 column: "FeatureId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ContactFeatures_ContactId",
+                name: "IX_ContactFeatures_ContactId_FeatureId",
                 table: "ContactFeatures",
-                column: "ContactId");
+                columns: new[] { "ContactId", "FeatureId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ContactFeatures_FeatureId",
@@ -288,14 +322,20 @@ namespace Infrastructure.Messenger.Migrations
                 column: "FeatureId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contacts_ContactGroupId",
-                table: "Contacts",
-                column: "ContactGroupId");
+                name: "IX_ContactGroups_ContactId_GroupId",
+                table: "ContactGroups",
+                columns: new[] { "ContactId", "GroupId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contacts_TypeId",
+                name: "IX_ContactGroups_GroupId",
+                table: "ContactGroups",
+                column: "GroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contacts_ContactTypeId",
                 table: "Contacts",
-                column: "TypeId");
+                column: "ContactTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messages_ChannelId",
@@ -319,7 +359,13 @@ namespace Infrastructure.Messenger.Migrations
                 name: "ContactFeatures");
 
             migrationBuilder.DropTable(
+                name: "ContactGroups");
+
+            migrationBuilder.DropTable(
                 name: "Messages");
+
+            migrationBuilder.DropTable(
+                name: "Groups");
 
             migrationBuilder.DropTable(
                 name: "Channels");
@@ -332,9 +378,6 @@ namespace Infrastructure.Messenger.Migrations
 
             migrationBuilder.DropTable(
                 name: "Features");
-
-            migrationBuilder.DropTable(
-                name: "ContactGroups");
 
             migrationBuilder.DropTable(
                 name: "ContactTypes");

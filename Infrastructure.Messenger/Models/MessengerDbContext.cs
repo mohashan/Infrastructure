@@ -6,11 +6,12 @@ namespace Infrastructure.Messenger.Models
     public class MessengerDbContext : DbContext
     {
         public MessengerDbContext(DbContextOptions options) : base(options) { }
+        public DbSet<Group> Groups { get; set; } = null!;
         public DbSet<ContactGroup> ContactGroups { get; set; } = null!;
         public DbSet<Contact> Contacts { get; set; } = null!;
         public DbSet<ContactType> ContactTypes { get; set; } = null!;
         public DbSet<Feature> Features { get; set; } = null!;
-        public DbSet<ContactFeatures> ContactFeatures { get; set; } = null!;
+        public DbSet<ContactFeature> ContactFeatures { get; set; } = null!;
         public DbSet<Channel> Channels { get; set; } = null!;
         public DbSet<Template> Templates { get; set; } = null!;
         public DbSet<Message> Messages { get; set; } = null!;
@@ -26,27 +27,36 @@ namespace Infrastructure.Messenger.Models
                 new ContactType { Id= 3,Title = "Device" },
             });
 
-            modelBuilder.Entity<ContactGroup>().HasQueryFilter(c => !c.IsDeleted).HasData(new ContactGroup[]
+            modelBuilder.Entity<Group>().HasQueryFilter(c => !c.IsDeleted).HasData(new Group[]
             {
-                new ContactGroup { Id=1,Title = "G1" },
+                new Group { Id=1,Title = "G1" },
             });
 
             modelBuilder.Entity<Contact>().HasQueryFilter(c => !c.IsDeleted).HasData(new Contact[]
             {
-                new Contact { Id=1,Title = "Admin",TypeId = 1,ContactGroupId = 1 },
-                new Contact { Id = 2,Title = "SupportUser",TypeId = 1 },
+                new Contact { Id=1,Title = "Admin",ContactTypeId = 1 },
+                new Contact { Id = 2,Title = "SupportUser",ContactTypeId = 1 },
             });
 
-            modelBuilder.Entity<ContactFeatures>().HasQueryFilter(c => !c.IsDeleted).HasData(new ContactFeatures[]
+            modelBuilder.Entity<ContactGroup>().HasQueryFilter(c => !c.IsDeleted).HasData(new ContactGroup[]
             {
-                new ContactFeatures { Id=1, Title="FullName",ContactId = 1,FeatureId = 1,Value = "Administrator" },
-                new ContactFeatures { Id=2, Title="e-Mail",ContactId = 1,FeatureId = 5,Value = "Admin@MyServices.com" },
-                new ContactFeatures { Id=3, Title="MobileNumber",ContactId = 1,FeatureId = 6,Value = "+9898765432101" },
-
-                new ContactFeatures { Id=4, Title="FullName",ContactId = 2,FeatureId = 1,Value = "Support User" },
-                new ContactFeatures { Id=5, Title="e-Mail",ContactId = 2,FeatureId = 5,Value = "Support@MyServices.com" },
-                new ContactFeatures { Id=6, Title="MobileNumber",ContactId = 2,FeatureId = 6,Value = "+9898765432102" },
+                new ContactGroup { Id=1,Title = "Admin",ContactId = 1,GroupId=1 },
+                new ContactGroup { Id = 2,Title = "SupportUser",ContactId = 2,GroupId = 1 },
             });
+            modelBuilder.Entity<ContactGroup>().HasIndex(c=>new { c.ContactId,c.GroupId}).IsUnique();
+
+            modelBuilder.Entity<ContactFeature>().HasQueryFilter(c => !c.IsDeleted).HasData(new ContactFeature[]
+            {
+                new ContactFeature { Id=1, Title="FullName",ContactId = 1,FeatureId = 1,Value = "Administrator" },
+                new ContactFeature { Id=2, Title="e-Mail",ContactId = 1,FeatureId = 5,Value = "Admin@MyServices.com" },
+                new ContactFeature { Id=3, Title="MobileNumber",ContactId = 1,FeatureId = 6,Value = "+9898765432101" },
+
+                new ContactFeature { Id=4, Title="FullName",ContactId = 2,FeatureId = 1,Value = "Support User" },
+                new ContactFeature { Id=5, Title="e-Mail",ContactId = 2,FeatureId = 5,Value = "Support@MyServices.com" },
+                new ContactFeature { Id=6, Title="MobileNumber",ContactId = 2,FeatureId = 6,Value = "+9898765432102" },
+            });
+            modelBuilder.Entity<ContactFeature>().HasIndex(c => new { c.ContactId, c.FeatureId }).IsUnique();
+
 
             modelBuilder.Entity<Feature>().HasQueryFilter(c => !c.IsDeleted).HasData(new Feature[]
             {

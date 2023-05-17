@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using AutoMapper.Features;
 using Infrastructure.BaseTools;
 using Infrastructure.Messenger.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 
@@ -23,47 +25,91 @@ namespace Infrastructure.Messenger.Controllers
             {
                 return BadRequest();
             }
-            var baseEnt = new BaseEntity<Message, MessageDto, MessageReadDto>();
-            var entity = baseEnt.GetEntity(dto, mapper);
 
-            var channel = ctx.Set<Channel>().FirstOrDefault(c => c.Id == dto.ChannelId);
-            if (channel == null)
+            Message? message = null;
+            try
             {
-                return NotFound("Channel not found");
+                message = await SendMessage(dto);
+            }
+            catch (Exception ex)
+            {
+                if (message is not null)
+                {
+                    message.Response = ex.Message;
+                    message.State = MessageState.Error;
+                }
             }
 
-            var template = ctx.Set<Template>().FirstOrDefault(t => t.Id == dto.TemplateId);
-            if (template == null)
+
+            return CreatedAtAction(nameof(Details),
+                new { id = message.Id }, message.GetReadDto(mapper));
+        }
+
+        [HttpPost("[action]/{groupId:int}")]
+        public async Task<ActionResult> SendToGroup(int groupId, [FromBody] MessageDto dto)
+        {
+            if (dto == null || groupId == 0)
             {
-                return NotFound("Template not found");
+                return BadRequest();
             }
 
-            var feature = ctx.Set<ContactFeatures>().FirstOrDefault(c => c.FeatureId == channel.FeatureId && c.ContactId == dto.ContactId);
-            if (feature == null)
+            var contacts = ctx.Set<ContactGroup>().Where(c => c.GroupId == groupId).ToList();
+            MessageDto messageDto;
+            Message message;
+            List<KeyValuePair<int, string>> Errors = new List<KeyValuePair<int, string>>();
+            foreach (var item in contacts)
             {
-                return NotFound("Contact feature not found");
-            }
-
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(channel.EndPoint);
-                
-                string result = string.Empty;
+                messageDto = new MessageDto(dto.title ?? item.Title, dto.ChannelId, item.ContactId, dto.TemplateId, dto.Parameters);
                 try
                 {
-                    entity.FillSentText(template.Body, channel.HttpRequestBody??string.Empty ,feature.Value); ;
-
-                    entity.Response = await httpClient.SendAsync(new Uri(channel.EndPoint), HttpMethod.Post, entity.SentText,channel.AuthorizationToken);
-                    
-                    entity.State = MessageState.Sent;
+                    message = await SendMessage(messageDto);
                 }
                 catch (Exception ex)
                 {
-                    entity.Response = ex.Message;
-                    entity.State = MessageState.Error;
+                    Errors.Add(new KeyValuePair<int, string>(item.ContactId, ex.Message));
                 }
-
             }
+
+            return Ok(new { errors = Errors });
+        }
+
+        private async Task<Message> SendMessage(MessageDto dto)
+        {
+
+            var entity = new Message().GetEntity(dto, mapper);
+
+            //entity.State = MessageState.Accepted;
+
+            Template template = ctx.Set<Template>().Find(dto.TemplateId);
+            Channel channel = ctx.Set<Channel>().Find(dto.ChannelId);
+
+            if (template == null)
+            {
+                throw new Exception("Template is not defined");
+            }
+
+            if (channel == null)
+            {
+                throw new Exception("Channel is not defined");
+            }
+
+            
+            // var message = await ctx.Set<Message>().Include(c => c.Template).Include(c => c.Channel).FirstOrDefaultAsync(c => c.Id == entity.Id);
+            //if (message == null)
+            //{
+            //    throw new Exception($"Failed to find message {entity}");
+            //}
+
+            var sendTo = (await ctx.Set<ContactFeature>().FirstOrDefaultAsync(c => c.ContactId == dto.ContactId && c.FeatureId == channel.FeatureId))?.Value;
+
+            if (sendTo == null)
+            {
+                throw new Exception("Not Found Value to send message");
+            }
+
+            string result = string.Empty;
+
+            entity.FillSentText(template.Body, channel.HttpRequestBody ?? string.Empty, sendTo);
             try
             {
                 ctx.Set<Message>().Add(entity);
@@ -74,10 +120,31 @@ namespace Infrastructure.Messenger.Controllers
                 throw new Exception("Create new Entity failed");
             }
 
+            try
+            {
+                entity.Response = await httpClient.SendAsync(new Uri(channel.EndPoint), HttpMethod.Post, entity.SentText, channel.AuthorizationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Send Request failed", ex);
+            }
 
+            entity.State = MessageState.Sent;
 
-            return CreatedAtAction(nameof(Details),
-                new { id = entity.Id }, entity.GetReadDto(mapper));
+            ctx.Entry(entity).State = EntityState.Modified;
+
+            try
+            {
+                await ctx.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Update new Entity failed");
+            }
+
+            return entity;
         }
     }
+
+
 }

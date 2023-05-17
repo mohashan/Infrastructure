@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Infrastructure.Messenger.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Messenger.Controllers
