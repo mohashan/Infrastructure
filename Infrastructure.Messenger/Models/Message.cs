@@ -11,27 +11,27 @@ namespace Infrastructure.Messenger.Models
     {
         [ForeignKey(nameof(Channel))]
         public int ChannelId { get; set; }
-        public Channel Channel { get; set; }
+        public Channel Channel { get; set; } = new Channel();
         [ForeignKey(nameof(Contact))]
         public int ContactId { get; set; }
-        public Contact Contact { get; set; }
+        public Contact Contact { get; set; } =  new Contact();
         [ForeignKey(nameof(Template))]
         public int TemplateId { get; set; }
-        public Template Template { get; set; }
+        public Template Template { get; set; } = new Template();
         public string? Parameters { get; set; }
         public MessageState State { get; set; }
 
         public string? Response { get; set; }
 
-        public string SentText { get; set; }
+        public string SentText { get; set; } = string.Empty;
 
         public void FillSentText(string TemplateText, string ChannelBodyRequest, string recipient)
         {
-            var body = MessageContent(TemplateText);
+            var body = CreateBodyByReplaceParametersInTemplate(TemplateText);
             SentText = ChannelBodyRequest.Replace("@text", body).Replace("@to", recipient);
         }
 
-        public string MessageContent(string TemplateText)
+        public string CreateBodyByReplaceParametersInTemplate(string TemplateText)
         {
             StringBuilder MessageText = new StringBuilder(TemplateText);
             string[] parameters = Parameters?.Split('|') ?? new string[] { string.Empty };

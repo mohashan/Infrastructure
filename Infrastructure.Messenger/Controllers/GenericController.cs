@@ -1,4 +1,5 @@
 ﻿using AutoMapper.QueryableExtensions;
+using Infrastructure.BaseTools;
 using Infrastructure.Messenger.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -28,17 +29,16 @@ namespace Infrastructure.Messenger.Controllers
         [HttpGet]
         public async Task<ActionResult> Index(int count = 10, int pageNumber = 1)
         {
-            return Ok(ctx.Set<TEntity>().Skip(count * (pageNumber - 1)).Take(count).AsNoTracking().ProjectTo(typeof(TReadDto),configurationProvider));
+            var result = ctx.Set<TEntity>().Skip(count * (pageNumber - 1)).Take(count).AsNoTracking().ProjectTo(typeof(TReadDto),configurationProvider);
+            return Ok(new StandardResponse<IQueryable>(true, null, result));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult> Details(int id)
         {
-            var item = await ctx.Set<TEntity>().FindAsync(id);
-            if (item == null)
-                return NotFound();
+            var item = (await ctx.Set<TEntity>().FindAsync(id))??throw new ArgumentException($"There is no entry with this id(id:{id})");
 
-            return Ok(item.GetReadDto(mapper));
+            return Ok(new StandardResponse<TReadDto>(true,null, item.GetReadDto(mapper)));
         }
         
         [HttpPost]
@@ -46,10 +46,12 @@ namespace Infrastructure.Messenger.Controllers
         {
             if (dto == null)
             {
-                return BadRequest();
+                throw new ArgumentNullException(nameof(dto));
             }
+
             var baseEnt = new Models.BaseEntity<TEntity,TDto,TReadDto>();
             var entity = baseEnt.GetEntity(dto,mapper);
+
             try
             {
                 ctx.Set<TEntity>().Add(entity);
@@ -57,13 +59,13 @@ namespace Infrastructure.Messenger.Controllers
             }
             catch (Exception)
             {
-                throw new Exception("Create new Entity failed");
+                throw new ArgumentException("Create new Entity failed");
             }
             
 
 
             return CreatedAtAction(nameof(Details),
-                new {  id = entity.Id },entity.GetReadDto(mapper));
+                new {  id = entity.Id },new StandardResponse<TReadDto>(true,null, entity.GetReadDto(mapper)));
         }
 
         [HttpPatch("{id:int}")]
@@ -71,15 +73,11 @@ namespace Infrastructure.Messenger.Controllers
         {
             if (patchDoc == null)
             {
-                return BadRequest();
+                throw new ArgumentNullException(nameof(patchDoc));
             }
 
-            var existingDto= ctx.Set<TEntity>().Find(id)?.GetDto(mapper);
+            var existingDto= (ctx.Set<TEntity>().Find(id)??throw new ArgumentException($"There is no entry with id : {id}")).GetDto(mapper);
 
-            if (existingDto == null)
-            {
-                return NotFound();
-            }
 
             patchDoc.ApplyTo(existingDto);
 
@@ -87,36 +85,20 @@ namespace Infrastructure.Messenger.Controllers
 
             TryValidateModel(entity);
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             ctx.Set<TEntity>().Update(entity);
 
-            try
-            {
 
                 ctx.SaveChanges();
-            }
-            catch (Exception)
-            {
-                throw new Exception("Update a entity failed on save");
-            }
 
 
-            return Ok(entity);
+            return Ok(new StandardResponse<TEntity>(true,null, entity));
         }
 
         [HttpDelete("{id:int}")]
         public ActionResult Remove(int id)
         {
-            var entity = ctx.Set<TEntity>().Find(id);
+            var entity = ctx.Set<TEntity>().Find(id)??throw new ArgumentException("$\"There is no entry with id : {id}");
 
-            if (entity == null)
-            {
-                return NotFound();
-            }
 
             entity.IsDeleted = true;
             entity.DeleteDate = DateTime.Now;

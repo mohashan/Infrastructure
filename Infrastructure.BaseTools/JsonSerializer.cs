@@ -10,7 +10,7 @@ namespace Infrastructure.BaseTools
 {
     public static class JsonSerializer
     {
-        public static string JsonSerialize(this object obj,int maxDepth = 0,JsonSerializerDefaults defaultSerializer = JsonSerializerDefaults.Web)
+        public static string Serialize(this object obj,int maxDepth = 0,JsonSerializerDefaults defaultSerializer = JsonSerializerDefaults.Web)
         {
             if (obj == null)
             {
@@ -27,14 +27,14 @@ namespace Infrastructure.BaseTools
             return System.Text.Json.JsonSerializer.Serialize(obj,options);
         }
 
-        public static T JsonDeserialize<T>(this string jsonString)
+        public static T? Deserialize<T>(this string jsonString)
         {
             if (!string.IsNullOrEmpty(jsonString))
             {
                 throw new ArgumentException("Input string is empty");
             }
 
-            return JsonSerializer.JsonDeserialize<T>(jsonString);
+            return System.Text.Json.JsonSerializer.Deserialize<T>(jsonString);
         }
     }
 }

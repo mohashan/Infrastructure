@@ -3,6 +3,7 @@ using AutoMapper.Features;
 using Infrastructure.BaseTools;
 using Infrastructure.Messenger.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
@@ -70,7 +71,7 @@ namespace Infrastructure.Messenger.Controllers
                 }
             }
 
-            return Ok(new { errors = Errors });
+            return Ok(new StandardResponse<List<KeyValuePair<int,string>>>(Errors.Any()?false:true,$"Message sent to group with {Errors.Count} error(s)", Errors));
         }
 
         private async Task<Message> SendMessage(MessageDto dto)
@@ -78,69 +79,24 @@ namespace Infrastructure.Messenger.Controllers
 
             var entity = new Message().GetEntity(dto, mapper);
 
-            //entity.State = MessageState.Accepted;
+            Template template = ctx.Set<Template>().Find(dto.TemplateId) ?? throw new Exception("Template is not defined");
+            Channel channel = ctx.Set<Channel>().Find(dto.ChannelId) ?? throw new Exception("Channel is not defined");
 
-            Template template = ctx.Set<Template>().Find(dto.TemplateId);
-            Channel channel = ctx.Set<Channel>().Find(dto.ChannelId);
+            var recipient = (await ctx.Set<ContactFeature>().FirstOrDefaultAsync(c => c.ContactId == dto.ContactId && c.FeatureId == channel.FeatureId)) ??
+                throw new Exception("Message recipient not found");
 
-            if (template == null)
-            {
-                throw new Exception("Template is not defined");
-            }
+            entity.FillSentText(template.Body, channel.HttpRequestBody ?? string.Empty, recipient.Value);
 
-            if (channel == null)
-            {
-                throw new Exception("Channel is not defined");
-            }
+            ctx.Set<Message>().Add(entity);
+            await ctx.SaveChangesAsync();
 
-            
-            // var message = await ctx.Set<Message>().Include(c => c.Template).Include(c => c.Channel).FirstOrDefaultAsync(c => c.Id == entity.Id);
-            //if (message == null)
-            //{
-            //    throw new Exception($"Failed to find message {entity}");
-            //}
-
-            var sendTo = (await ctx.Set<ContactFeature>().FirstOrDefaultAsync(c => c.ContactId == dto.ContactId && c.FeatureId == channel.FeatureId))?.Value;
-
-            if (sendTo == null)
-            {
-                throw new Exception("Not Found Value to send message");
-            }
-
-            string result = string.Empty;
-
-            entity.FillSentText(template.Body, channel.HttpRequestBody ?? string.Empty, sendTo);
-            try
-            {
-                ctx.Set<Message>().Add(entity);
-                await ctx.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Create new Entity failed");
-            }
-
-            try
-            {
-                entity.Response = await httpClient.SendAsync(new Uri(channel.EndPoint), HttpMethod.Post, entity.SentText, channel.AuthorizationToken);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Send Request failed", ex);
-            }
+            entity.Response = await httpClient.SendAsync(new Uri(channel.EndPoint), HttpMethod.Post, entity.SentText, channel.AuthorizationToken);
 
             entity.State = MessageState.Sent;
 
             ctx.Entry(entity).State = EntityState.Modified;
 
-            try
-            {
-                await ctx.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Update new Entity failed");
-            }
+            await ctx.SaveChangesAsync();
 
             return entity;
         }

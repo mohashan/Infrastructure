@@ -19,6 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient<IHttpRequester, HttpRequester>();
 var app = builder.Build();
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 using (var scope = app.Services.CreateScope())
 {

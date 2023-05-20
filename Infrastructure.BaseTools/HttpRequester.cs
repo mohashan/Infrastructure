@@ -10,7 +10,7 @@ namespace Infrastructure.BaseTools
 
     public interface IHttpRequester
     {
-        Task<string> SendAsync(Uri uri, HttpMethod method, string? body, string? AuthorizationToken);
+        Task<string> SendAsync(Uri uri, HttpMethod method, string body, string? AuthorizationToken);
     }
     public class HttpRequester : IHttpRequester
     {
@@ -20,22 +20,46 @@ namespace Infrastructure.BaseTools
         {
             this.httpClient = httpClient;
         }
-        public async Task<string> SendAsync(Uri uri, HttpMethod method, string? body, string? AuthorizationToken)
+        public Task<string> SendAsync(Uri uri, HttpMethod method, string body, string? AuthorizationToken)
         {
-            StringContent content = new StringContent(body);
+            StringContent? content = null;
+            if (body != string.Empty)
+                content = new StringContent(body);
 
             HttpRequestMessage request = new HttpRequestMessage
             {
                 Content = content,
                 Method = method,
             };
+
             httpClient.BaseAddress = uri;
-            request.Headers.Add("Accept", "application/json");
+            
+            Dictionary<string,string> headers = new Dictionary<string, string>
+            {
+                {"Content-Type","application/json" },
+                {"Accept","application/json" },
+            };
 
-            if (AuthorizationToken != null)
-                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(AuthorizationToken);
+            if (!string.IsNullOrEmpty(AuthorizationToken))
+                headers["Authorization"] = AuthorizationToken;
 
-            var response = await httpClient.SendAsync(request);
+            AddHeaders(request, headers);
+
+            return sendRequest(request);
+        }
+
+        private void AddHeaders(HttpRequestMessage message,Dictionary<string,string> headers)
+        {
+            foreach (var header in headers)
+            {
+                message.Headers.Add(header.Key, header.Value);
+            }
+
+        }
+
+        private async Task<string> sendRequest(HttpRequestMessage message)
+        {
+            var response = await httpClient.SendAsync(message);
             if (response == null)
             {
                 throw new Exception("Response is null");
