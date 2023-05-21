@@ -19,8 +19,8 @@ namespace Infrastructure.Messenger.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
-            modelBuilder.Entity<ContactType>().HasQueryFilter(c=>!c.IsDeleted).HasData(new ContactType[]
+
+            modelBuilder.Entity<ContactType>().HasQueryFilter(c => !c.IsDeleted).HasData(new ContactType[]
             {
                 new ContactType { Id=1,Title = "People" },
                 new ContactType { Id = 2,Title = "Service" },
@@ -43,7 +43,7 @@ namespace Infrastructure.Messenger.Models
                 new ContactGroup { Id=1,Title = "Admin",ContactId = 1,GroupId=1 },
                 new ContactGroup { Id = 2,Title = "SupportUser",ContactId = 2,GroupId = 1 },
             });
-            modelBuilder.Entity<ContactGroup>().HasIndex(c=>new { c.ContactId,c.GroupId}).IsUnique();
+            modelBuilder.Entity<ContactGroup>().HasIndex(c => new { c.ContactId, c.GroupId }).IsUnique();
 
             modelBuilder.Entity<ContactFeature>().HasQueryFilter(c => !c.IsDeleted).HasData(new ContactFeature[]
             {
@@ -70,16 +70,16 @@ namespace Infrastructure.Messenger.Models
 
             modelBuilder.Entity<Channel>().HasQueryFilter(c => !c.IsDeleted).HasData(new Channel[]
             {
-                new Channel 
-                { 
+                new Channel
+                {
                     Id=1,
-                    Title = "SMS", 
+                    Title = "SMS",
                     FeatureId = 6,
                     EndPoint = "https://sms.MyServices.com/Send",
                     HttpRequestBody = @"{to:'@to',text:'@text'}"
                 },
-                new Channel 
-                { 
+                new Channel
+                {
                     Id = 2,
                     Title = "e-Mail" ,
                     FeatureId = 5,

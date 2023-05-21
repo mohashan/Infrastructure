@@ -233,9 +233,9 @@ namespace Infrastructure.Messenger.Migrations
                 columns: new[] { "Id", "DeleteDate", "InsertDate", "IsDeleted", "Title" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(5283), false, "People" },
-                    { 2, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(5294), false, "Service" },
-                    { 3, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(5295), false, "Device" }
+                    { 1, null, new DateTime(2023, 5, 21, 21, 20, 25, 896, DateTimeKind.Local).AddTicks(9500), false, "People" },
+                    { 2, null, new DateTime(2023, 5, 21, 21, 20, 25, 896, DateTimeKind.Local).AddTicks(9529), false, "Service" },
+                    { 3, null, new DateTime(2023, 5, 21, 21, 20, 25, 896, DateTimeKind.Local).AddTicks(9532), false, "Device" }
                 });
 
             migrationBuilder.InsertData(
@@ -243,26 +243,26 @@ namespace Infrastructure.Messenger.Migrations
                 columns: new[] { "Id", "DataType", "DeleteDate", "Description", "InsertDate", "IsDeleted", "Title" },
                 values: new object[,]
                 {
-                    { 1, "System.String", null, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7537), false, "FullName" },
-                    { 2, "System.String", null, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7541), false, "NationalCode" },
-                    { 3, "System.String", null, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7542), false, "Address" },
-                    { 4, "System.String", null, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7593), false, "Gender" },
-                    { 5, "System.String", null, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7595), false, "e-Mail" },
-                    { 6, "System.String", null, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7596), false, "MobileNumber" }
+                    { 1, "System.String", null, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6032), false, "FullName" },
+                    { 2, "System.String", null, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6042), false, "NationalCode" },
+                    { 3, "System.String", null, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6045), false, "Address" },
+                    { 4, "System.String", null, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6048), false, "Gender" },
+                    { 5, "System.String", null, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6051), false, "e-Mail" },
+                    { 6, "System.String", null, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6053), false, "MobileNumber" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Groups",
                 columns: new[] { "Id", "DeleteDate", "InsertDate", "IsDeleted", "Title" },
-                values: new object[] { 1, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(5496), false, "G1" });
+                values: new object[] { 1, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(79), false, "G1" });
 
             migrationBuilder.InsertData(
                 table: "Templates",
                 columns: new[] { "Id", "Body", "DeleteDate", "InsertDate", "IsDeleted", "Title" },
                 values: new object[,]
                 {
-                    { 1, "Server @param0 has a problem: @param1", null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7784), false, "Server_Monitoring" },
-                    { 2, "Service @param0 has a problem: @param1", null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7785), false, "Service_Monitoring" }
+                    { 1, "Server @param0 has a problem: @param1", null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6664), false, "Server_Monitoring" },
+                    { 2, "Service @param0 has a problem: @param1", null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6669), false, "Service_Monitoring" }
                 });
 
             migrationBuilder.InsertData(
@@ -270,8 +270,8 @@ namespace Infrastructure.Messenger.Migrations
                 columns: new[] { "Id", "AuthorizationToken", "DeleteDate", "Description", "EndPoint", "FeatureId", "HttpRequestBody", "InsertDate", "IsDeleted", "Title" },
                 values: new object[,]
                 {
-                    { 1, null, null, null, "https://sms.MyServices.com/Send", 6, "{to:'@to',text:'@text'}", new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7700), false, "SMS" },
-                    { 2, null, null, null, "https://EMail.MyServices.com/Send", 5, "{to:'@to',text:'@text'}", new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(7703), false, "e-Mail" }
+                    { 1, null, null, null, "https://sms.MyServices.com/Send", 6, "{to:'@to',text:'@text'}", new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6442), false, "SMS" },
+                    { 2, null, null, null, "https://EMail.MyServices.com/Send", 5, "{to:'@to',text:'@text'}", new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6449), false, "e-Mail" }
                 });
 
             migrationBuilder.InsertData(
@@ -279,8 +279,8 @@ namespace Infrastructure.Messenger.Migrations
                 columns: new[] { "Id", "ContactTypeId", "DeleteDate", "InsertDate", "IsDeleted", "Title" },
                 values: new object[,]
                 {
-                    { 1, 1, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(5587), false, "Admin" },
-                    { 2, 1, null, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(5589), false, "SupportUser" }
+                    { 1, 1, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(295), false, "Admin" },
+                    { 2, 1, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(300), false, "SupportUser" }
                 });
 
             migrationBuilder.InsertData(
@@ -288,12 +288,12 @@ namespace Infrastructure.Messenger.Migrations
                 columns: new[] { "Id", "ContactId", "DeleteDate", "FeatureId", "InsertDate", "IsDeleted", "Title", "Value" },
                 values: new object[,]
                 {
-                    { 1, 1, null, 1, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(6760), false, "FullName", "Administrator" },
-                    { 2, 1, null, 5, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(6764), false, "e-Mail", "Admin@MyServices.com" },
-                    { 3, 1, null, 6, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(6765), false, "MobileNumber", "+9898765432101" },
-                    { 4, 2, null, 1, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(6766), false, "FullName", "Support User" },
-                    { 5, 2, null, 5, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(6766), false, "e-Mail", "Support@MyServices.com" },
-                    { 6, 2, null, 6, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(6767), false, "MobileNumber", "+9898765432102" }
+                    { 1, 1, null, 1, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3734), false, "FullName", "Administrator" },
+                    { 2, 1, null, 5, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3747), false, "e-Mail", "Admin@MyServices.com" },
+                    { 3, 1, null, 6, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3749), false, "MobileNumber", "+9898765432101" },
+                    { 4, 2, null, 1, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3752), false, "FullName", "Support User" },
+                    { 5, 2, null, 5, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3754), false, "e-Mail", "Support@MyServices.com" },
+                    { 6, 2, null, 6, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3757), false, "MobileNumber", "+9898765432102" }
                 });
 
             migrationBuilder.InsertData(
@@ -301,8 +301,8 @@ namespace Infrastructure.Messenger.Migrations
                 columns: new[] { "Id", "ContactId", "DeleteDate", "GroupId", "InsertDate", "IsDeleted", "Title" },
                 values: new object[,]
                 {
-                    { 1, 1, null, 1, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(5669), false, "Admin" },
-                    { 2, 2, null, 1, new DateTime(2023, 5, 17, 9, 57, 7, 448, DateTimeKind.Local).AddTicks(5671), false, "SupportUser" }
+                    { 1, 1, null, 1, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(501), false, "Admin" },
+                    { 2, 2, null, 1, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(508), false, "SupportUser" }
                 });
 
             migrationBuilder.CreateIndex(

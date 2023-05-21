@@ -24,26 +24,22 @@ namespace Infrastructure.Messenger.Controllers
         {
             if (dto == null)
             {
-                return BadRequest();
+                throw new ArgumentNullException(nameof(dto));
             }
 
-            Message? message = null;
+            Message message = null;
             try
             {
                 message = await SendMessage(dto);
             }
             catch (Exception ex)
             {
-                if (message is not null)
-                {
-                    message.Response = ex.Message;
-                    message.State = MessageState.Error;
-                }
+                throw new Exception($"Message sent Error(message id : {message?.Id}): {ex.Message}");
             }
 
 
             return CreatedAtAction(nameof(Details),
-                new { id = message.Id }, message.GetReadDto(mapper));
+                new { id = message?.Id }, new StandardResponse<MessageReadDto>(true,"Message created and sent successfully", message?.GetReadDto(mapper)));
         }
 
         [HttpPost("[action]/{groupId:int}")]

@@ -11,13 +11,13 @@ namespace Infrastructure.Messenger.Models
     {
         [ForeignKey(nameof(Channel))]
         public int ChannelId { get; set; }
-        public Channel Channel { get; set; } = new Channel();
+        public Channel Channel { get; set; } 
         [ForeignKey(nameof(Contact))]
         public int ContactId { get; set; }
-        public Contact Contact { get; set; } =  new Contact();
+        public Contact Contact { get; set; } 
         [ForeignKey(nameof(Template))]
         public int TemplateId { get; set; }
-        public Template Template { get; set; } = new Template();
+        public Template Template { get; set; } 
         public string? Parameters { get; set; }
         public MessageState State { get; set; }
 

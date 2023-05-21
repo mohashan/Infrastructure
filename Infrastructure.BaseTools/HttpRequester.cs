@@ -36,7 +36,6 @@ namespace Infrastructure.BaseTools
             
             Dictionary<string,string> headers = new Dictionary<string, string>
             {
-                {"Content-Type","application/json" },
                 {"Accept","application/json" },
             };
 

@@ -11,7 +11,7 @@ namespace Infrastructure.Messenger.Models
         [ForeignKey(nameof(ContactType))]
         public int ContactTypeId { get; set; }
         [JsonIgnore]
-        public virtual ContactType ContactType { get; set; }
+        public virtual ContactType ContactType { get; set; } 
         [JsonIgnore]
         public virtual ICollection<ContactFeature>? ContactFeatures { get; set; }
 

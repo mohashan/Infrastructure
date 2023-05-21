@@ -10,14 +10,14 @@ namespace Infrastructure.Messenger.Models
         [ForeignKey(nameof(Contact))]
         public int ContactId { get; set; }
         [JsonIgnore]
-        public virtual Contact Contact { get; set; }
+        public virtual Contact Contact { get; set; } 
 
         [ForeignKey(nameof(Feature))]
         public int FeatureId { get; set; }
         [JsonIgnore]
-        public virtual Feature Feature { get; set; }
+        public virtual Feature Feature { get; set; } 
 
-        public string Value { get; set; }
+        public string Value { get; set; } = string.Empty;
     }
 
     public record ContactFeatureDto(string? title,int ContactId, int FeatureId, string Value):BaseDto(title);

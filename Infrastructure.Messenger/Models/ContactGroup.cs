@@ -7,10 +7,10 @@ namespace Infrastructure.Messenger.Models
     {
         [ForeignKey(nameof(this.Contact))]
         public int ContactId { get; set; }
-        public Contact Contact { get; set; } = new Contact();
+        public Contact Contact { get; set; } 
         [ForeignKey(nameof(this.Group))]
         public int GroupId { get; set; }
-        public Group Group { get; set; } = new Group();
+        public Group Group { get; set; } 
 
     }
 

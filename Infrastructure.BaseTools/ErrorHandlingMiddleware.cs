@@ -21,13 +21,14 @@ namespace Infrastructure.BaseTools
 
         public async Task Invoke(HttpContext context)
         {
-            string ERROR_MESSAGE = $"An error has occured while processing your request. Trace Code : {context.TraceIdentifier}";
             try
             {
                 await _next(context);
             }
             catch (Exception error)
             {
+                string ERROR_MESSAGE = $"An error has occured while processing your request. Trace Code : {context.TraceIdentifier}";
+
                 var response = context.Response;
                 response.ContentType = "application/json";
 
