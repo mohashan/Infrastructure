@@ -29,7 +29,7 @@ namespace Infrastructure.Messenger.Controllers
         {
             var existEntity = await ctx.ContactFeatures.Include(c => c.Feature).
                                 FirstOrDefaultAsync(c => c.FeatureId == FeatureId && c.ContactId == ContactId);
-            ContactFeature entity = new ContactFeature().GetEntity(dto,mapper);
+            ContactFeature entity = dto.GetEntity(mapper);
             if (existEntity == null)
             {
                 existEntity = new ContactFeature

@@ -26,7 +26,7 @@ namespace Infrastructure.Messenger.Controllers
             {
                 ContactId = contactId,
                 GroupId = id,
-                Title = contact?.Title
+                Name = contact?.Name ?? string.Empty
             };
 
             ctx.Set<ContactGroup>().Add(contactGroup);

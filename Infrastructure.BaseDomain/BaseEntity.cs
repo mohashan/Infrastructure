@@ -46,15 +46,14 @@ namespace Infrastructure.BaseDomain
             return mapper.Map<T>(this);
         }
     }
-    public class BaseReadDto<T, TDto, TReadDto>
+    public class BaseReadDto<T, TDto, TReadDto>:BaseDto<T, TDto, TReadDto>
     where T : BaseEntity<T, TDto, TReadDto>
     where TDto : BaseDto<T, TDto, TReadDto>
     where TReadDto : BaseReadDto<T, TDto, TReadDto>
     {
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
         public DateTime InsertDate { get; set; } = DateTime.Now;
-        public virtual T GetEntity(IMapper mapper)
+        public override T GetEntity(IMapper mapper)
         {
             return mapper.Map<T>(this);
         }

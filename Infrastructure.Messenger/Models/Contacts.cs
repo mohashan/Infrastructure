@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Infrastructure.BaseDomain;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.Json.Serialization;
@@ -20,6 +21,13 @@ namespace Infrastructure.Messenger.Models
         public virtual ICollection<Message>? Messages { get; set; }
     }
 
-    public record ContactDto(string? title,int TypeId,int? ContactGroupId):BaseDto(title);
-    public record ContactReadDto(int Id, string? title, int TypeId, int? ContactGroupId, DateTime InsertDate) : BaseReadDto(Id, title, InsertDate);
+    public class ContactDto:BaseDto<Contact, ContactDto, ContactReadDto>
+    {
+        public int ContactTypeId { get; set; }
+    }
+    public class ContactReadDto : BaseReadDto<Contact, ContactDto, ContactReadDto>
+    {
+        public int ContactTypeId { get; set; }
+        public string ContactTypeTitle { get; set; } = string.Empty;
+    }
 }

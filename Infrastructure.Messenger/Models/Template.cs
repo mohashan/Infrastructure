@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Infrastructure.BaseDomain;
+using System.ComponentModel.DataAnnotations;
 
 namespace Infrastructure.Messenger.Models
 {
@@ -11,6 +12,14 @@ namespace Infrastructure.Messenger.Models
 
     }
 
-    public record TemplateDto(string? title, string Body) : BaseDto(title);
-    public record TemplateReadDto(int Id, string? title, string Body, DateTime InsertDate) : BaseReadDto(Id, title, InsertDate);
+    public class TemplateDto : BaseDto<Template, TemplateDto, TemplateReadDto>
+    {
+        public string Body { get; set; }
+
+    }
+    public class TemplateReadDto: BaseReadDto<Template, TemplateDto, TemplateReadDto>
+    {
+        public string Body { get; set; }
+        public int MessagesCount { get; set; }
+    }
 }

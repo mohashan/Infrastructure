@@ -1,4 +1,5 @@
 ﻿using AutoMapper.QueryableExtensions;
+using Infrastructure.BaseDomain;
 using Infrastructure.BaseTools;
 using Infrastructure.Messenger.Models;
 using Microsoft.AspNetCore.JsonPatch;
@@ -13,8 +14,8 @@ namespace Infrastructure.Messenger.Controllers
     [Route("api/[controller]")]
     public class GenericController<TEntity, TDto, TReadDto> : ControllerBase
         where TEntity : BaseEntity<TEntity, TDto, TReadDto>
-        where TDto : BaseDto
-        where TReadDto : BaseReadDto
+        where TDto : BaseDto<TEntity, TDto, TReadDto>
+        where TReadDto : BaseReadDto<TEntity, TDto, TReadDto>
     {
         protected readonly MessengerDbContext ctx;
         private readonly AutoMapper.IConfigurationProvider configurationProvider;
@@ -29,14 +30,14 @@ namespace Infrastructure.Messenger.Controllers
         [HttpGet]
         public async Task<ActionResult> Index(int count = 10, int pageNumber = 1)
         {
-            var result = ctx.Set<TEntity>().Skip(count * (pageNumber - 1)).Take(count).AsNoTracking().ProjectTo(typeof(TReadDto), configurationProvider);
+            IQueryable? result = ctx.Set<TEntity>().Skip(count * (pageNumber - 1)).Take(count).AsNoTracking().ProjectTo(typeof(TReadDto), configurationProvider);
             return Ok(new StandardResponse<IQueryable>(true, null, result));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult> Details(int id)
         {
-            var item = (await ctx.Set<TEntity>().FindAsync(id)) ?? throw new ArgumentException($"There is no entry with this id(id:{id})");
+            TEntity? item = (await ctx.Set<TEntity>().FindAsync(id)) ?? throw new ArgumentException($"There is no entry with this id(id:{id})");
 
             return Ok(new StandardResponse<TReadDto>(true, null, item.GetReadDto(mapper)));
         }
@@ -49,8 +50,7 @@ namespace Infrastructure.Messenger.Controllers
                 throw new ArgumentNullException(nameof(dto));
             }
 
-            var baseEnt = new Models.BaseEntity<TEntity, TDto, TReadDto>();
-            var entity = baseEnt.GetEntity(dto, mapper);
+            TEntity? entity = dto.GetEntity(mapper);
 
             try
             {
@@ -76,12 +76,12 @@ namespace Infrastructure.Messenger.Controllers
                 throw new ArgumentNullException(nameof(patchDoc));
             }
 
-            var existingDto = (ctx.Set<TEntity>().Find(id) ?? throw new ArgumentException($"There is no entry with id : {id}")).GetDto(mapper);
+            TDto? existingDto = (ctx.Set<TEntity>().Find(id) ?? throw new ArgumentException($"There is no entry with id : {id}")).GetDto(mapper);
 
 
             patchDoc.ApplyTo(existingDto);
 
-            var entity = new BaseEntity<TEntity, TDto, TReadDto>().GetEntity(existingDto, mapper);
+            TEntity? entity = existingDto.GetEntity(mapper);
 
             TryValidateModel(entity);
 
@@ -97,7 +97,7 @@ namespace Infrastructure.Messenger.Controllers
         [HttpDelete("{id:int}")]
         public ActionResult Remove(int id)
         {
-            var entity = ctx.Set<TEntity>().Find(id) ?? throw new ArgumentException($"There is no entry with id : {id}");
+            TEntity? entity = ctx.Set<TEntity>().Find(id) ?? throw new ArgumentException($"There is no entry with id : {id}");
 
 
             entity.IsDeleted = true;
@@ -110,17 +110,18 @@ namespace Infrastructure.Messenger.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public ActionResult<TEntity> Update(int id, [FromBody] TDto dto)
+        public async Task<ActionResult<TEntity>> Update(int id, [FromBody] TDto dto)
         {
             if (dto == null)
             {
                 throw new ArgumentNullException(nameof(dto));
             }
 
-            var existingItem = ctx.Set<TEntity>().Find(id) ?? throw new ArgumentException($"There is no entry with id : {id}");
+            if(!await ctx.Set<TEntity>().AnyAsync(c=>c.Id == id)) 
+                throw new ArgumentException($"There is no entry with id : {id}");
 
-            existingItem.GetEntity(dto, mapper);
-
+            TEntity existingItem = dto.GetEntity(mapper);
+            existingItem.Id = id;
             ctx.Entry<TEntity>(existingItem).State = EntityState.Modified;
             ctx.SaveChanges();
 

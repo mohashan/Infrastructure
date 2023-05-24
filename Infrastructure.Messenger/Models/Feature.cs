@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Infrastructure.BaseDomain;
 using System;
 using System.Text.Json.Serialization;
 
@@ -10,7 +11,7 @@ namespace Infrastructure.Messenger.Models
         {
             DataType = typeof(Type)?.FullName ?? typeof(string).FullName;
         }
-        public string DataType { get; set; } = typeof(string)?.FullName;
+        public string DataType { get; set; } = typeof(string).FullName;
 
         public string? Description { get; set; }
         [JsonIgnore]
@@ -21,7 +22,17 @@ namespace Infrastructure.Messenger.Models
 
     }
 
-    public record FeatureDto(string DataType, string title, string? Description) : BaseDto(title);
-    public record FeatureReadDto(int Id, string DataType, string title, string? Description, DateTime InsertDate) : BaseReadDto(Id, title, InsertDate);
+    public class FeatureDto: BaseDto<Feature, FeatureDto, FeatureReadDto>
+    {
+        public string DataType { get; set; } 
+        public string? Description { get; set; }
+
+
+    }
+    public class FeatureReadDto : BaseReadDto<Feature, FeatureDto, FeatureReadDto>
+    {
+        public string DataType { get; set; } = string.Empty;
+        public string? Description { get; set; }
+    }
 
 }

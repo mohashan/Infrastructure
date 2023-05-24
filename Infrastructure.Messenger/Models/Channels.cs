@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
+using Infrastructure.BaseDomain;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Infrastructure.Messenger.Models
 {
-    public class Channel:BaseEntity<Channel,ChannelDto,ChannelReadDto>
+    public class Channel : BaseEntity<Channel, ChannelDto, ChannelReadDto>
     {
         public string? Description { get; set; }
         public string EndPoint { get; set; } = string.Empty;
@@ -20,7 +21,20 @@ namespace Infrastructure.Messenger.Models
         public string? AuthorizationToken { get; set; }
     }
 
-    public record ChannelDto(string? title, string? Description, string Endpoint, int FeatureId,string HttpRequestBody) :BaseDto(title);
-    public record ChannelReadDto(int Id, string? title, string? Description, string Endpoint, int FeatureId, string HttpRequestBody,DateTime InsertDate) :BaseReadDto(Id, title, InsertDate);
+    public class ChannelDto : BaseDto<Channel,ChannelDto, ChannelReadDto>
+    {
+        public string? Description { get; set; }
+        public string Endpoint { get; set; } = string.Empty;
+        public int FeatureId { get; set; }
+        public string? HttpRequestBody { get; set; }
+    }
+    public class ChannelReadDto: BaseReadDto<Channel, ChannelDto, ChannelReadDto>
+    {
+        public string? Description { get; set; }
+        public string Endpoint { get; set; } = string.Empty;
+        public int FeatureId { get; set; }
+        public string FeatureTitle { get; set; } = string.Empty;
+        public string? HttpRequestBody { get; set; }
+    }
 
 }

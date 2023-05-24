@@ -1,4 +1,5 @@
 ﻿using AutoMapper.Features;
+using Infrastructure.BaseDomain;
 using Infrastructure.BaseTools;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net.Http;
@@ -46,10 +47,28 @@ namespace Infrastructure.Messenger.Models
 
         
     }
-    public record MessageDto(string? title, int ChannelId, int ContactId, int TemplateId, string? Parameters)
-        : BaseDto(title);
-    public record MessageReadDto(int Id, string? title, int ChannelId, int ContactId, int TemplateId, string? Parameters, MessageState State, DateTime InsertDate, string? Response, string SentText)
-        : BaseReadDto(Id, title, InsertDate);
+    public class MessageDto: BaseDto<Message, MessageDto, MessageReadDto>
+    {
+        public int ChannelId { get; set; }
+        public int ContactId { get; set; }
+        public int TemplateId { get; set; }
+        public string? Parameters { get; set; }
+
+    }
+    public class MessageReadDto: BaseReadDto<Message, MessageDto, MessageReadDto>
+    {
+        public int ChannelId { get; set; }
+        public string? ChannelTitle { get; set; }
+        public int ContactId { get; set; }
+        public string? ContactTitle { get; set; }
+        public int TemplateId { get; set; }
+        public string? TemplateTitle { get; set; }
+        public string? Parameters { get; set; }
+        public string? MessageState { get; set; }
+        public string? Response { get; set; }
+
+        public string SentText { get; set; } = string.Empty;
+    }
 
     public enum MessageState
     {

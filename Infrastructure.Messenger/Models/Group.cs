@@ -1,10 +1,19 @@
-﻿namespace Infrastructure.Messenger.Models
+﻿using Infrastructure.BaseDomain;
+
+namespace Infrastructure.Messenger.Models
 {
     public class Group:BaseEntity<Group,GroupDto,GroupReadDto>
     {
         public virtual ICollection<ContactGroup>? ContactGroups { get; set; }
     }
 
-    public record GroupDto(string? title) : BaseDto(title);
-    public record GroupReadDto(int Id, string? title,DateTime InsertDate) : BaseReadDto(Id, title ,InsertDate);
+    public class GroupDto : BaseDto<Group, GroupDto, GroupReadDto>
+    {
+
+    }
+    public class GroupReadDto : BaseReadDto<Group, GroupDto, GroupReadDto>
+    {
+        public int ContactGroupCount { get; set; }
+    }
+
 }

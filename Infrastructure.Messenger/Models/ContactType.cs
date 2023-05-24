@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Infrastructure.BaseDomain;
 using System;
 
 namespace Infrastructure.Messenger.Models
@@ -9,7 +10,13 @@ namespace Infrastructure.Messenger.Models
 
     }
 
-    public record ContactTypeDto(string? title):BaseDto(title);
+    public class ContactTypeDto:BaseDto<ContactType, ContactTypeDto, ContactTypeReadDto>
+    {
 
-    public record ContactTypeReadDto(int Id, string title,DateTime InsertDate):BaseReadDto(Id,title, InsertDate);
+    }
+
+    public class ContactTypeReadDto:BaseReadDto<ContactType, ContactTypeDto, ContactTypeReadDto>
+    {
+
+    }
 }

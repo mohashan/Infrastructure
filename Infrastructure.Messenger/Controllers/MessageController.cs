@@ -56,7 +56,15 @@ namespace Infrastructure.Messenger.Controllers
             List<KeyValuePair<int, string>> Errors = new List<KeyValuePair<int, string>>();
             foreach (var item in contacts)
             {
-                messageDto = new MessageDto(dto.title ?? item.Title, dto.ChannelId, item.ContactId, dto.TemplateId, dto.Parameters);
+                messageDto = new MessageDto
+                {
+                    Name = dto.Name ?? item.Name,
+                    ChannelId = dto.ChannelId,
+                    ContactId = item.ContactId,
+                    TemplateId = dto.TemplateId,
+                    Parameters = dto.Parameters
+                };
+
                 try
                 {
                     message = await SendMessage(messageDto);
@@ -73,7 +81,7 @@ namespace Infrastructure.Messenger.Controllers
         private async Task<Message> SendMessage(MessageDto dto)
         {
 
-            var entity = new Message().GetEntity(dto, mapper);
+            var entity = dto.GetEntity(mapper);
 
             Template template = ctx.Set<Template>().Find(dto.TemplateId) ?? throw new Exception("Template is not defined");
             Channel channel = ctx.Set<Channel>().Find(dto.ChannelId) ?? throw new Exception("Channel is not defined");

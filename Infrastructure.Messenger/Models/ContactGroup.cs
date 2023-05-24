@@ -1,4 +1,5 @@
 ﻿
+using Infrastructure.BaseDomain;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Infrastructure.Messenger.Models
@@ -14,6 +15,19 @@ namespace Infrastructure.Messenger.Models
 
     }
 
-    public record ContactGroupDto(string? title, int ContactId, int? GroupId) : BaseDto(title);
-    public record ContactGroupReadDto(int Id, string? title, int ContactId, int? GroupId, DateTime InsertDate) : BaseReadDto(Id, title, InsertDate);
+    public class ContactGroupDto : BaseDto<ContactGroup, ContactGroupDto, ContactGroupReadDto>
+    {
+        public int ContactId { get; set; }
+
+        public int GroupId { get; set; }
+
+    }
+    public class ContactGroupReadDto : BaseReadDto<ContactGroup, ContactGroupDto, ContactGroupReadDto>
+    {
+        public int ContactId { get; set; }
+        public string? ContactTitle { get; set; }
+
+        public int GroupId { get; set; }
+        public string? GroupTitle { get; set; }
+    }
 }
