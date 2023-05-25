@@ -28,11 +28,12 @@ namespace Infrastructure.BaseTools
 
             HttpRequestMessage request = new HttpRequestMessage
             {
+                RequestUri = uri,
                 Content = content,
                 Method = method,
             };
 
-            httpClient.BaseAddress = uri;
+            //httpClient.BaseAddress = uri;
             
             Dictionary<string,string> headers = new Dictionary<string, string>
             {

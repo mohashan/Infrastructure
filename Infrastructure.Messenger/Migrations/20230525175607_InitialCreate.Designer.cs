@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Messenger.Migrations
 {
     [DbContext(typeof(MessengerDbContext))]
-    [Migration("20230521175026_InitialCreate")]
+    [Migration("20230525175607_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,7 +57,8 @@ namespace Infrastructure.Messenger.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -73,9 +74,9 @@ namespace Infrastructure.Messenger.Migrations
                             EndPoint = "https://sms.MyServices.com/Send",
                             FeatureId = 6,
                             HttpRequestBody = "{to:'@to',text:'@text'}",
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6442),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1689),
                             IsDeleted = false,
-                            Title = "SMS"
+                            Name = "SMS"
                         },
                         new
                         {
@@ -83,9 +84,9 @@ namespace Infrastructure.Messenger.Migrations
                             EndPoint = "https://EMail.MyServices.com/Send",
                             FeatureId = 5,
                             HttpRequestBody = "{to:'@to',text:'@text'}",
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6449),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1694),
                             IsDeleted = false,
-                            Title = "e-Mail"
+                            Name = "e-Mail"
                         });
                 });
 
@@ -109,7 +110,8 @@ namespace Infrastructure.Messenger.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -123,17 +125,17 @@ namespace Infrastructure.Messenger.Migrations
                         {
                             Id = 1,
                             ContactTypeId = 1,
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(295),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(5539),
                             IsDeleted = false,
-                            Title = "Admin"
+                            Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
                             ContactTypeId = 1,
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(300),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(5546),
                             IsDeleted = false,
-                            Title = "SupportUser"
+                            Name = "SupportUser"
                         });
                 });
 
@@ -160,7 +162,8 @@ namespace Infrastructure.Messenger.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Value")
@@ -182,9 +185,9 @@ namespace Infrastructure.Messenger.Migrations
                             Id = 1,
                             ContactId = 1,
                             FeatureId = 1,
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3734),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(8477),
                             IsDeleted = false,
-                            Title = "FullName",
+                            Name = "FullName",
                             Value = "Administrator"
                         },
                         new
@@ -192,9 +195,9 @@ namespace Infrastructure.Messenger.Migrations
                             Id = 2,
                             ContactId = 1,
                             FeatureId = 5,
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3747),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(8490),
                             IsDeleted = false,
-                            Title = "e-Mail",
+                            Name = "e-Mail",
                             Value = "Admin@MyServices.com"
                         },
                         new
@@ -202,9 +205,9 @@ namespace Infrastructure.Messenger.Migrations
                             Id = 3,
                             ContactId = 1,
                             FeatureId = 6,
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3749),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(8493),
                             IsDeleted = false,
-                            Title = "MobileNumber",
+                            Name = "MobileNumber",
                             Value = "+9898765432101"
                         },
                         new
@@ -212,9 +215,9 @@ namespace Infrastructure.Messenger.Migrations
                             Id = 4,
                             ContactId = 2,
                             FeatureId = 1,
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3752),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(8496),
                             IsDeleted = false,
-                            Title = "FullName",
+                            Name = "FullName",
                             Value = "Support User"
                         },
                         new
@@ -222,9 +225,9 @@ namespace Infrastructure.Messenger.Migrations
                             Id = 5,
                             ContactId = 2,
                             FeatureId = 5,
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3754),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(8498),
                             IsDeleted = false,
-                            Title = "e-Mail",
+                            Name = "e-Mail",
                             Value = "Support@MyServices.com"
                         },
                         new
@@ -232,9 +235,9 @@ namespace Infrastructure.Messenger.Migrations
                             Id = 6,
                             ContactId = 2,
                             FeatureId = 6,
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3757),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(8500),
                             IsDeleted = false,
-                            Title = "MobileNumber",
+                            Name = "MobileNumber",
                             Value = "+9898765432102"
                         });
                 });
@@ -262,7 +265,8 @@ namespace Infrastructure.Messenger.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -280,18 +284,18 @@ namespace Infrastructure.Messenger.Migrations
                             Id = 1,
                             ContactId = 1,
                             GroupId = 1,
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(501),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(5701),
                             IsDeleted = false,
-                            Title = "Admin"
+                            Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
                             ContactId = 2,
                             GroupId = 1,
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(508),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(5707),
                             IsDeleted = false,
-                            Title = "SupportUser"
+                            Name = "SupportUser"
                         });
                 });
 
@@ -312,7 +316,8 @@ namespace Infrastructure.Messenger.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -323,23 +328,23 @@ namespace Infrastructure.Messenger.Migrations
                         new
                         {
                             Id = 1,
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 896, DateTimeKind.Local).AddTicks(9500),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(4685),
                             IsDeleted = false,
-                            Title = "People"
+                            Name = "People"
                         },
                         new
                         {
                             Id = 2,
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 896, DateTimeKind.Local).AddTicks(9529),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(4712),
                             IsDeleted = false,
-                            Title = "Service"
+                            Name = "Service"
                         },
                         new
                         {
                             Id = 3,
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 896, DateTimeKind.Local).AddTicks(9532),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(4734),
                             IsDeleted = false,
-                            Title = "Device"
+                            Name = "Device"
                         });
                 });
 
@@ -367,7 +372,8 @@ namespace Infrastructure.Messenger.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -379,49 +385,49 @@ namespace Infrastructure.Messenger.Migrations
                         {
                             Id = 1,
                             DataType = "System.String",
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6032),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1448),
                             IsDeleted = false,
-                            Title = "FullName"
+                            Name = "FullName"
                         },
                         new
                         {
                             Id = 2,
                             DataType = "System.String",
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6042),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1458),
                             IsDeleted = false,
-                            Title = "NationalCode"
+                            Name = "NationalCode"
                         },
                         new
                         {
                             Id = 3,
                             DataType = "System.String",
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6045),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1461),
                             IsDeleted = false,
-                            Title = "Address"
+                            Name = "Address"
                         },
                         new
                         {
                             Id = 4,
                             DataType = "System.String",
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6048),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1464),
                             IsDeleted = false,
-                            Title = "Gender"
+                            Name = "Gender"
                         },
                         new
                         {
                             Id = 5,
                             DataType = "System.String",
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6051),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1467),
                             IsDeleted = false,
-                            Title = "e-Mail"
+                            Name = "e-Mail"
                         },
                         new
                         {
                             Id = 6,
                             DataType = "System.String",
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6053),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1470),
                             IsDeleted = false,
-                            Title = "MobileNumber"
+                            Name = "MobileNumber"
                         });
                 });
 
@@ -442,7 +448,8 @@ namespace Infrastructure.Messenger.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -453,9 +460,9 @@ namespace Infrastructure.Messenger.Migrations
                         new
                         {
                             Id = 1,
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(79),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(5352),
                             IsDeleted = false,
-                            Title = "G1"
+                            Name = "G1"
                         });
                 });
 
@@ -482,6 +489,10 @@ namespace Infrastructure.Messenger.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Parameters")
                         .HasColumnType("nvarchar(max)");
 
@@ -497,9 +508,6 @@ namespace Infrastructure.Messenger.Migrations
 
                     b.Property<int>("TemplateId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -533,7 +541,8 @@ namespace Infrastructure.Messenger.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -545,17 +554,17 @@ namespace Infrastructure.Messenger.Migrations
                         {
                             Id = 1,
                             Body = "Server @param0 has a problem: @param1",
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6664),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1878),
                             IsDeleted = false,
-                            Title = "Server_Monitoring"
+                            Name = "Server_Monitoring"
                         },
                         new
                         {
                             Id = 2,
                             Body = "Service @param0 has a problem: @param1",
-                            InsertDate = new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6669),
+                            InsertDate = new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1883),
                             IsDeleted = false,
-                            Title = "Service_Monitoring"
+                            Name = "Service_Monitoring"
                         });
                 });
 

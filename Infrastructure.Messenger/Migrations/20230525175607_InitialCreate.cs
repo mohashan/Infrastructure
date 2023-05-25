@@ -15,7 +15,7 @@ namespace Infrastructure.Messenger.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -33,7 +33,7 @@ namespace Infrastructure.Messenger.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DataType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -49,7 +49,7 @@ namespace Infrastructure.Messenger.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -66,7 +66,7 @@ namespace Infrastructure.Messenger.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Body = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -83,7 +83,7 @@ namespace Infrastructure.Messenger.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ContactTypeId = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -110,7 +110,7 @@ namespace Infrastructure.Messenger.Migrations
                     FeatureId = table.Column<int>(type: "int", nullable: false),
                     HttpRequestBody = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AuthorizationToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -135,7 +135,7 @@ namespace Infrastructure.Messenger.Migrations
                     ContactId = table.Column<int>(type: "int", nullable: false),
                     FeatureId = table.Column<int>(type: "int", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -165,7 +165,7 @@ namespace Infrastructure.Messenger.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ContactId = table.Column<int>(type: "int", nullable: false),
                     GroupId = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -200,7 +200,7 @@ namespace Infrastructure.Messenger.Migrations
                     State = table.Column<int>(type: "int", nullable: false),
                     Response = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SentText = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -230,79 +230,79 @@ namespace Infrastructure.Messenger.Migrations
 
             migrationBuilder.InsertData(
                 table: "ContactTypes",
-                columns: new[] { "Id", "DeleteDate", "InsertDate", "IsDeleted", "Title" },
+                columns: new[] { "Id", "DeleteDate", "InsertDate", "IsDeleted", "Name" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2023, 5, 21, 21, 20, 25, 896, DateTimeKind.Local).AddTicks(9500), false, "People" },
-                    { 2, null, new DateTime(2023, 5, 21, 21, 20, 25, 896, DateTimeKind.Local).AddTicks(9529), false, "Service" },
-                    { 3, null, new DateTime(2023, 5, 21, 21, 20, 25, 896, DateTimeKind.Local).AddTicks(9532), false, "Device" }
+                    { 1, null, new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(4685), false, "People" },
+                    { 2, null, new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(4712), false, "Service" },
+                    { 3, null, new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(4734), false, "Device" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Features",
-                columns: new[] { "Id", "DataType", "DeleteDate", "Description", "InsertDate", "IsDeleted", "Title" },
+                columns: new[] { "Id", "DataType", "DeleteDate", "Description", "InsertDate", "IsDeleted", "Name" },
                 values: new object[,]
                 {
-                    { 1, "System.String", null, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6032), false, "FullName" },
-                    { 2, "System.String", null, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6042), false, "NationalCode" },
-                    { 3, "System.String", null, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6045), false, "Address" },
-                    { 4, "System.String", null, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6048), false, "Gender" },
-                    { 5, "System.String", null, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6051), false, "e-Mail" },
-                    { 6, "System.String", null, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6053), false, "MobileNumber" }
+                    { 1, "System.String", null, null, new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1448), false, "FullName" },
+                    { 2, "System.String", null, null, new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1458), false, "NationalCode" },
+                    { 3, "System.String", null, null, new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1461), false, "Address" },
+                    { 4, "System.String", null, null, new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1464), false, "Gender" },
+                    { 5, "System.String", null, null, new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1467), false, "e-Mail" },
+                    { 6, "System.String", null, null, new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1470), false, "MobileNumber" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Groups",
-                columns: new[] { "Id", "DeleteDate", "InsertDate", "IsDeleted", "Title" },
-                values: new object[] { 1, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(79), false, "G1" });
+                columns: new[] { "Id", "DeleteDate", "InsertDate", "IsDeleted", "Name" },
+                values: new object[] { 1, null, new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(5352), false, "G1" });
 
             migrationBuilder.InsertData(
                 table: "Templates",
-                columns: new[] { "Id", "Body", "DeleteDate", "InsertDate", "IsDeleted", "Title" },
+                columns: new[] { "Id", "Body", "DeleteDate", "InsertDate", "IsDeleted", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Server @param0 has a problem: @param1", null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6664), false, "Server_Monitoring" },
-                    { 2, "Service @param0 has a problem: @param1", null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6669), false, "Service_Monitoring" }
+                    { 1, "Server @param0 has a problem: @param1", null, new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1878), false, "Server_Monitoring" },
+                    { 2, "Service @param0 has a problem: @param1", null, new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1883), false, "Service_Monitoring" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Channels",
-                columns: new[] { "Id", "AuthorizationToken", "DeleteDate", "Description", "EndPoint", "FeatureId", "HttpRequestBody", "InsertDate", "IsDeleted", "Title" },
+                columns: new[] { "Id", "AuthorizationToken", "DeleteDate", "Description", "EndPoint", "FeatureId", "HttpRequestBody", "InsertDate", "IsDeleted", "Name" },
                 values: new object[,]
                 {
-                    { 1, null, null, null, "https://sms.MyServices.com/Send", 6, "{to:'@to',text:'@text'}", new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6442), false, "SMS" },
-                    { 2, null, null, null, "https://EMail.MyServices.com/Send", 5, "{to:'@to',text:'@text'}", new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(6449), false, "e-Mail" }
+                    { 1, null, null, null, "https://sms.MyServices.com/Send", 6, "{to:'@to',text:'@text'}", new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1689), false, "SMS" },
+                    { 2, null, null, null, "https://EMail.MyServices.com/Send", 5, "{to:'@to',text:'@text'}", new DateTime(2023, 5, 25, 21, 26, 6, 458, DateTimeKind.Local).AddTicks(1694), false, "e-Mail" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Contacts",
-                columns: new[] { "Id", "ContactTypeId", "DeleteDate", "InsertDate", "IsDeleted", "Title" },
+                columns: new[] { "Id", "ContactTypeId", "DeleteDate", "InsertDate", "IsDeleted", "Name" },
                 values: new object[,]
                 {
-                    { 1, 1, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(295), false, "Admin" },
-                    { 2, 1, null, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(300), false, "SupportUser" }
+                    { 1, 1, null, new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(5539), false, "Admin" },
+                    { 2, 1, null, new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(5546), false, "SupportUser" }
                 });
 
             migrationBuilder.InsertData(
                 table: "ContactFeatures",
-                columns: new[] { "Id", "ContactId", "DeleteDate", "FeatureId", "InsertDate", "IsDeleted", "Title", "Value" },
+                columns: new[] { "Id", "ContactId", "DeleteDate", "FeatureId", "InsertDate", "IsDeleted", "Name", "Value" },
                 values: new object[,]
                 {
-                    { 1, 1, null, 1, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3734), false, "FullName", "Administrator" },
-                    { 2, 1, null, 5, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3747), false, "e-Mail", "Admin@MyServices.com" },
-                    { 3, 1, null, 6, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3749), false, "MobileNumber", "+9898765432101" },
-                    { 4, 2, null, 1, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3752), false, "FullName", "Support User" },
-                    { 5, 2, null, 5, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3754), false, "e-Mail", "Support@MyServices.com" },
-                    { 6, 2, null, 6, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(3757), false, "MobileNumber", "+9898765432102" }
+                    { 1, 1, null, 1, new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(8477), false, "FullName", "Administrator" },
+                    { 2, 1, null, 5, new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(8490), false, "e-Mail", "Admin@MyServices.com" },
+                    { 3, 1, null, 6, new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(8493), false, "MobileNumber", "+9898765432101" },
+                    { 4, 2, null, 1, new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(8496), false, "FullName", "Support User" },
+                    { 5, 2, null, 5, new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(8498), false, "e-Mail", "Support@MyServices.com" },
+                    { 6, 2, null, 6, new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(8500), false, "MobileNumber", "+9898765432102" }
                 });
 
             migrationBuilder.InsertData(
                 table: "ContactGroups",
-                columns: new[] { "Id", "ContactId", "DeleteDate", "GroupId", "InsertDate", "IsDeleted", "Title" },
+                columns: new[] { "Id", "ContactId", "DeleteDate", "GroupId", "InsertDate", "IsDeleted", "Name" },
                 values: new object[,]
                 {
-                    { 1, 1, null, 1, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(501), false, "Admin" },
-                    { 2, 2, null, 1, new DateTime(2023, 5, 21, 21, 20, 25, 897, DateTimeKind.Local).AddTicks(508), false, "SupportUser" }
+                    { 1, 1, null, 1, new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(5701), false, "Admin" },
+                    { 2, 2, null, 1, new DateTime(2023, 5, 25, 21, 26, 6, 457, DateTimeKind.Local).AddTicks(5707), false, "SupportUser" }
                 });
 
             migrationBuilder.CreateIndex(

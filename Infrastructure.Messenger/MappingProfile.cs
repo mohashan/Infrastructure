@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Infrastructure.BaseDomain;
 using Infrastructure.Messenger.Models;
 using System.Net;
 using System.Reflection;
