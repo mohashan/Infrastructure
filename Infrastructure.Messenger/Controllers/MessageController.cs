@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.Features;
+using Infrastructure.BaseControllers;
 using Infrastructure.BaseTools;
 using Infrastructure.Messenger.Models;
 using Microsoft.AspNetCore.Mvc;

@@ -1,27 +1,24 @@
 ﻿using AutoMapper.QueryableExtensions;
 using Infrastructure.BaseDomain;
 using Infrastructure.BaseTools;
-using Infrastructure.Messenger.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Diagnostics;
 
-namespace Infrastructure.Messenger.Controllers
+namespace Infrastructure.BaseControllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class GenericController<TEntity, TDto, TReadDto> : ControllerBase
-        where TEntity : BaseEntity<TEntity, TDto, TReadDto>
-        where TDto : BaseDto<TEntity, TDto, TReadDto>
-        where TReadDto : BaseReadDto<TEntity, TDto, TReadDto>
+    where TEntity : BaseEntity<TEntity, TDto, TReadDto>
+    where TDto : BaseDto<TEntity, TDto, TReadDto>
+    where TReadDto : BaseReadDto<TEntity, TDto, TReadDto>
     {
-        protected readonly MessengerDbContext ctx;
+        protected readonly ApplicationDbContext ctx;
         private readonly AutoMapper.IConfigurationProvider configurationProvider;
         protected readonly AutoMapper.Mapper mapper;
 
-        public GenericController(MessengerDbContext context, AutoMapper.IConfigurationProvider configurationProvider)
+        public GenericController(ApplicationDbContext context, AutoMapper.IConfigurationProvider configurationProvider)
         {
             this.ctx = context;
             this.configurationProvider = configurationProvider;
@@ -117,7 +114,7 @@ namespace Infrastructure.Messenger.Controllers
                 throw new ArgumentNullException(nameof(dto));
             }
 
-            if(!await ctx.Set<TEntity>().AnyAsync(c=>c.Id == id)) 
+            if (!await ctx.Set<TEntity>().AnyAsync(c => c.Id == id))
                 throw new ArgumentException($"There is no entry with id : {id}");
 
             TEntity existingItem = dto.GetEntity(mapper);

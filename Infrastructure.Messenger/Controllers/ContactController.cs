@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Infrastructure.BaseControllers;
 using Infrastructure.Messenger.Models;
 using Microsoft.EntityFrameworkCore;
 

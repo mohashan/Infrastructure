@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Infrastructure.BaseControllers;
 using Infrastructure.Messenger.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +12,11 @@ namespace Infrastructure.Messenger.Controllers
         public FeatureController(MessengerDbContext ctx,AutoMapper.IConfigurationProvider cfg):base(ctx, cfg)
         {
         }
+
         [HttpGet("{FeatureId:int}/[action]/{ContactId:int}")]
         public async Task<ActionResult> GetByContactId(int FeatureId, int ContactId)
         {
-            var result = (await ctx.ContactFeatures.Include(c=>c.Feature).
+            var result = (await ctx.Set<ContactFeature>().Include(c=>c.Feature).
                                 FirstOrDefaultAsync(c=>c.FeatureId == FeatureId && c.ContactId == ContactId))?
                                 .GetReadDto(mapper);
 
@@ -27,7 +29,7 @@ namespace Infrastructure.Messenger.Controllers
         [HttpPost("{FeatureId:int}/[action]/{ContactId:int}")]
         public async Task<ActionResult> SetByContactId(int FeatureId, int ContactId, [FromBody] ContactFeatureDto dto)
         {
-            var existEntity = await ctx.ContactFeatures.Include(c => c.Feature).
+            var existEntity = await ctx.Set<ContactFeature>().Include(c => c.Feature).
                                 FirstOrDefaultAsync(c => c.FeatureId == FeatureId && c.ContactId == ContactId);
             ContactFeature entity = dto.GetEntity(mapper);
             if (existEntity == null)
@@ -38,7 +40,7 @@ namespace Infrastructure.Messenger.Controllers
                     FeatureId = FeatureId,
                     Value = dto.Value,
                 };
-                ctx.ContactFeatures.Add(existEntity);
+                ctx.Set<ContactFeature>().Add(existEntity);
             }
             else
             {

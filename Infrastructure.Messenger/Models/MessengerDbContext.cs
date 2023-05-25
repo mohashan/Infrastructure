@@ -1,21 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Infrastructure.BaseDomain;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
 namespace Infrastructure.Messenger.Models
 {
-    public class MessengerDbContext : DbContext
+    public class MessengerDbContext : ApplicationDbContext
     {
-        public MessengerDbContext(DbContextOptions options) : base(options) { }
-        public DbSet<Group> Groups { get; set; } = null!;
-        public DbSet<ContactGroup> ContactGroups { get; set; } = null!;
-        public DbSet<Contact> Contacts { get; set; } = null!;
-        public DbSet<ContactType> ContactTypes { get; set; } = null!;
-        public DbSet<Feature> Features { get; set; } = null!;
-        public DbSet<ContactFeature> ContactFeatures { get; set; } = null!;
-        public DbSet<Channel> Channels { get; set; } = null!;
-        public DbSet<Template> Templates { get; set; } = null!;
-        public DbSet<Message> Messages { get; set; } = null!;
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

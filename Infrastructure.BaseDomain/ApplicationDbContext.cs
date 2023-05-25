@@ -25,5 +25,9 @@ namespace Infrastructure.BaseDomain
             }
         }
 
+        public DbContext CreateDbContext()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
