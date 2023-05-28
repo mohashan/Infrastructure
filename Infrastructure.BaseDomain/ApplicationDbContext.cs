@@ -12,10 +12,11 @@ namespace Infrastructure.BaseDomain
 
     public class ApplicationDbContext : DbContext
     {
-        public static void RegisterEntitiesForDbSet<T,TDto,TReadDto>(ModelBuilder modelBuilder, string assemblyName) 
-            where T : BaseEntity<T,TDto,TReadDto>
-            where TDto : BaseDto<T,TDto,TReadDto>
-            where TReadDto : BaseReadDto<T,TDto,TReadDto>
+        public static void RegisterEntitiesForDbSet<T,TCreateDto,TReadDto,TListDto>(ModelBuilder modelBuilder, string assemblyName)
+            where T : BaseEntity<T, TCreateDto, TReadDto, TListDto>
+    where TCreateDto : BaseCreateDto<T, TCreateDto, TReadDto, TListDto>
+    where TReadDto : BaseReadDto<T, TCreateDto, TReadDto, TListDto>
+    where TListDto : BaseListDto<T, TCreateDto, TReadDto, TListDto>
         {
             var entityMethod = typeof(ModelBuilder).GetMethod("Entity", new[] { typeof(string) });
             var types = Assembly.Load(assemblyName).GetTypes().Where(x => x.BaseType != null && x.BaseType.Name == typeof(T).Name);
@@ -25,9 +26,6 @@ namespace Infrastructure.BaseDomain
             }
         }
 
-        public DbContext CreateDbContext()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

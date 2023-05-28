@@ -2,17 +2,18 @@
 {
     public static class AssemblyHelper
     {
-        public static bool IsEntity<T,TDto,TReadDto>(this Type toCheck)
-        where T : BaseEntity<T, TDto, TReadDto>
-        where TDto : BaseDto<T, TDto, TReadDto>
-        where TReadDto : BaseReadDto<T, TDto, TReadDto>
+        public static bool IsEntity<T, TCreateDto, TReadDto, TListDto>(this Type toCheck)
+        where T : BaseEntity<T, TCreateDto, TReadDto, TListDto>
+    where TCreateDto : BaseCreateDto<T, TCreateDto, TReadDto, TListDto>
+    where TReadDto : BaseReadDto<T, TCreateDto, TReadDto, TListDto>
+    where TListDto : BaseListDto<T, TCreateDto, TReadDto, TListDto>
         {
-            var baseEntity = typeof(BaseEntity<T,TDto,TReadDto>);
+            var baseEntity = typeof(BaseEntity<T, TCreateDto, TReadDto, TListDto>);
             if (baseEntity == toCheck)
             {
                 return false;
             }
-            if(toCheck.BaseType?.GetGenericArguments().Count() != 3)
+            if (toCheck.BaseType?.GetGenericArguments().Count() != 4)
             {
                 return false;
             }

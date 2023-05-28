@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Infrastructure.BaseUserManager.Models
 {
-    public class User : BaseEntity<User, UserDto, UserReadDto>
+    public class User : BaseEntity<User, UserCreateDto, UserReadDto,UserListDto>
     {
 
         [ForeignKey(nameof(UserType))]
@@ -19,14 +19,19 @@ namespace Infrastructure.BaseUserManager.Models
 
     }
 
-    public class UserDto : BaseDto<User, UserDto, UserReadDto>
+    public class UserCreateDto : BaseCreateDto<User, UserCreateDto, UserReadDto, UserListDto>
     {
-        public int ContactTypeId { get; set; }
+        public int UserTypeId { get; set; }
     }
-    public class UserReadDto : BaseReadDto<User, UserDto, UserReadDto>
+    public class UserReadDto : BaseReadDto<User, UserCreateDto, UserReadDto, UserListDto>
     {
-        public int ContactTypeId { get; set; }
-        public string ContactTypeTitle { get; set; } = string.Empty;
+        public int UserTypeId { get; set; }
+        public string UserTypeTitle { get; set; } = string.Empty;
+    }
+
+    public class UserListDto : BaseListDto<User, UserCreateDto, UserReadDto, UserListDto>
+    {
+        public int UserTypeId { get; set; }
     }
 
     public static class UserRepositoryHelper

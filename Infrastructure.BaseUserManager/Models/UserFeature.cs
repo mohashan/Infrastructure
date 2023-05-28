@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Infrastructure.BaseUserManager.Models
 {
-    public class UserFeature : BaseEntity<UserFeature, UserFeatureDto, UserFeatureReadDto>
+    public class UserFeature : BaseEntity<UserFeature, UserFeatureCreateDto, UserFeatureReadDto,UserFeatureListDto>
     {
 
         [ForeignKey(nameof(User))]
@@ -20,7 +20,7 @@ namespace Infrastructure.BaseUserManager.Models
         public string Value { get; set; } = string.Empty;
     }
 
-    public class UserFeatureDto : BaseDto<UserFeature, UserFeatureDto, UserFeatureReadDto>
+    public class UserFeatureCreateDto : BaseCreateDto<UserFeature, UserFeatureCreateDto, UserFeatureReadDto,UserFeatureListDto>
     {
         public int UserId { get; set; }
         public int FeatureId { get; set; }
@@ -28,12 +28,20 @@ namespace Infrastructure.BaseUserManager.Models
 
 
     }
-    public class UserFeatureReadDto : BaseReadDto<UserFeature, UserFeatureDto, UserFeatureReadDto>
+    public class UserFeatureReadDto : BaseReadDto<UserFeature, UserFeatureCreateDto, UserFeatureReadDto, UserFeatureListDto>
     {
         public int UserId { get; set; }
         public string UserName { get; set; } = string.Empty;
         public int FeatureId { get; set; }
         public string FeatureName { get; set; } = string.Empty;
         public string Value { get; set; } = string.Empty;
+    }
+    public class UserFeatureListDto : BaseListDto<UserFeature, UserFeatureCreateDto, UserFeatureReadDto, UserFeatureListDto>
+    {
+        public int UserId { get; set; }
+        public int FeatureId { get; set; }
+        public string Value { get; set; } = string.Empty;
+
+
     }
 }

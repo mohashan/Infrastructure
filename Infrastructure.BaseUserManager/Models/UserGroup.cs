@@ -3,30 +3,38 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Infrastructure.BaseUserManager.Models
 {
-    public class UserGroup : BaseEntity<UserGroup, UserGroupDto, UserGroupReadDto>
+    public class UserGroup : BaseEntity<UserGroup, UserGroupCreateDto, UserGroupReadDto,UserGroupListDto>
     {
         [ForeignKey(nameof(this.User))]
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public User User { get; set; }
         [ForeignKey(nameof(Group))]
-        public int GroupId { get; set; }
+        public Guid GroupId { get; set; }
         public Group Group { get; set; }
 
     }
 
-    public class UserGroupDto : BaseDto<UserGroup, UserGroupDto, UserGroupReadDto>
+    public class UserGroupCreateDto : BaseCreateDto<UserGroup, UserGroupCreateDto, UserGroupReadDto, UserGroupListDto>
     {
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
 
-        public int GroupId { get; set; }
+        public Guid GroupId { get; set; }
 
     }
-    public class UserGroupReadDto : BaseReadDto<UserGroup, UserGroupDto, UserGroupReadDto>
+    public class UserGroupReadDto : BaseReadDto<UserGroup, UserGroupCreateDto, UserGroupReadDto, UserGroupListDto>
     {
-        public int UsreId { get; set; }
+        public Guid UsreId { get; set; }
         public string? UserName{ get; set; }
 
-        public int GroupId { get; set; }
+        public Guid GroupId { get; set; }
         public string? GroupName { get; set; }
+    }
+
+    public class UserGroupListDto : BaseListDto<UserGroup, UserGroupCreateDto, UserGroupReadDto, UserGroupListDto>
+    {
+        public Guid UserId { get; set; }
+
+        public Guid GroupId { get; set; }
+
     }
 }
