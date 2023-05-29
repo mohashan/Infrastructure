@@ -19,4 +19,7 @@ namespace Infrastructure.BaseUserManager.Models
     }
 
     public class UserTypeListDto:BaseListDto<UserType, UserTypeCreateDto, UserTypeReadDto, UserTypeListDto>
+    {
+
+    }
 }

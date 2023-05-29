@@ -5,14 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Infrastructure.Messenger.Models
 {
-    public class Channel : BaseEntity<Channel, ChannelDto, ChannelReadDto>
+    public class Channel : BaseEntity<Channel, ChannelCreateDto, ChannelReadDto,ChannelListDto>
     {
         public string? Description { get; set; }
         public string EndPoint { get; set; } = string.Empty;
-        [ForeignKey(nameof(Feature))]
-        public int FeatureId { get; set; }
-        [JsonIgnore]
-        public Feature? Feature { get; set; }
+        
+        public Guid FeatureId { get; set; }
 
         public string? HttpRequestBody { get; set; }
 
@@ -21,20 +19,26 @@ namespace Infrastructure.Messenger.Models
         public string? AuthorizationToken { get; set; }
     }
 
-    public class ChannelDto : BaseDto<Channel,ChannelDto, ChannelReadDto>
+    public class ChannelCreateDto : BaseCreateDto<Channel, ChannelCreateDto, ChannelReadDto, ChannelListDto>
     {
         public string? Description { get; set; }
         public string Endpoint { get; set; } = string.Empty;
-        public int FeatureId { get; set; }
+        public Guid FeatureId { get; set; }
         public string? HttpRequestBody { get; set; }
     }
-    public class ChannelReadDto: BaseReadDto<Channel, ChannelDto, ChannelReadDto>
+    public class ChannelReadDto: BaseReadDto<Channel, ChannelCreateDto, ChannelReadDto, ChannelListDto>
     {
         public string? Description { get; set; }
         public string Endpoint { get; set; } = string.Empty;
-        public int FeatureId { get; set; }
+        public Guid FeatureId { get; set; }
         public string FeatureTitle { get; set; } = string.Empty;
         public string? HttpRequestBody { get; set; }
+    }
+
+    public class ChannelListDto : BaseListDto<Channel, ChannelCreateDto, ChannelReadDto, ChannelListDto>
+    {
+        public string Endpoint { get; set; } = string.Empty;
+        public Guid FeatureId { get; set; }
     }
 
 }

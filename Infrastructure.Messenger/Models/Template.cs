@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Infrastructure.Messenger.Models
 {
-    public class Template : BaseEntity<Template, TemplateDto, TemplateReadDto>
+    public class Template : BaseEntity<Template, TemplateCreateDto, TemplateReadDto, TemplateListDto>
     {
         [Required]
         public string Body { get; set; }
@@ -12,14 +12,20 @@ namespace Infrastructure.Messenger.Models
 
     }
 
-    public class TemplateDto : BaseDto<Template, TemplateDto, TemplateReadDto>
+    public class TemplateCreateDto : BaseCreateDto<Template, TemplateCreateDto, TemplateReadDto,TemplateListDto>
     {
+        [Required]
         public string Body { get; set; }
 
     }
-    public class TemplateReadDto: BaseReadDto<Template, TemplateDto, TemplateReadDto>
+    public class TemplateReadDto: BaseReadDto<Template, TemplateCreateDto, TemplateReadDto, TemplateListDto>
     {
         public string Body { get; set; }
+        public int MessagesCount { get; set; }
+    }
+
+    public class TemplateListDto : BaseListDto<Template, TemplateCreateDto, TemplateReadDto, TemplateListDto>
+    {
         public int MessagesCount { get; set; }
     }
 }

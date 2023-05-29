@@ -8,14 +8,12 @@ using System.Threading.Channels;
 
 namespace Infrastructure.Messenger.Models
 {
-    public class Message : BaseEntity<Message, MessageDto, MessageReadDto>
+    public class Message : BaseEntity<Message, MessageCreateDto, MessageReadDto, MessageListDto>
     {
         [ForeignKey(nameof(Channel))]
         public int ChannelId { get; set; }
         public Channel Channel { get; set; } 
-        [ForeignKey(nameof(Contact))]
-        public int ContactId { get; set; }
-        public Contact Contact { get; set; } 
+        public int UserId { get; set; }
         [ForeignKey(nameof(Template))]
         public int TemplateId { get; set; }
         public Template Template { get; set; } 
@@ -47,20 +45,19 @@ namespace Infrastructure.Messenger.Models
 
         
     }
-    public class MessageDto: BaseDto<Message, MessageDto, MessageReadDto>
+    public class MessageCreateDto: BaseCreateDto<Message, MessageCreateDto, MessageReadDto, MessageListDto>
     {
         public int ChannelId { get; set; }
-        public int ContactId { get; set; }
+        public int UserId { get; set; }
         public int TemplateId { get; set; }
         public string? Parameters { get; set; }
 
     }
-    public class MessageReadDto: BaseReadDto<Message, MessageDto, MessageReadDto>
+    public class MessageReadDto: BaseReadDto<Message, MessageCreateDto, MessageReadDto, MessageListDto>
     {
         public int ChannelId { get; set; }
         public string? ChannelTitle { get; set; }
-        public int ContactId { get; set; }
-        public string? ContactTitle { get; set; }
+        public int UserId { get; set; }
         public int TemplateId { get; set; }
         public string? TemplateTitle { get; set; }
         public string? Parameters { get; set; }
@@ -70,6 +67,14 @@ namespace Infrastructure.Messenger.Models
         public string SentText { get; set; } = string.Empty;
     }
 
+    public class MessageListDto : BaseListDto<Message, MessageCreateDto, MessageReadDto,MessageListDto>
+    {
+        public int ChannelId { get; set; }
+        public int UserId { get; set; }
+        public int TemplateId { get; set; }
+        public string? Parameters { get; set; }
+        public string? MessageState { get; set; }
+    }
     public enum MessageState
     {
         Accepted,

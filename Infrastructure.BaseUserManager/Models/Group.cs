@@ -24,7 +24,7 @@ namespace Infrastructure.BaseUserManager.Models
 
     public static class GroupRepositiryHelper
     {
-        public static async Task RemoveUserFromGroupAsync(this Group group, int UserId, ApplicationDbContext context)
+        public static async Task RemoveUserFromGroupAsync(this Group group, Guid UserId, ApplicationDbContext context)
         {
             UserGroup userGroup = await context.Set<UserGroup>().FirstOrDefaultAsync(c => c.UserId == UserId && c.GroupId == group.Id)
                 ?? throw new ArgumentException("This user is not part of this group");

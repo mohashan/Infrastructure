@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Infrastructure.UserManager.Controllers
 {
-    public class GroupController : GenericController<Group,GroupDto,GroupReadDto>
+    public class GroupController : GenericController<Group,GroupCreateDto,GroupReadDto,GroupListDto>
     {
         public GroupController(UserManagerDbContext ctx, AutoMapper.IConfigurationProvider cfg) : base(ctx, cfg)
         {
         }
-        [HttpPost("{groupId:int}/[action]/{userId:int}")]
+        [HttpPost("{groupId}/[action]/{userId}")]
         public async Task<ActionResult> AddUserToGroup(int groupId,int userId)
         {
             Group group = await ctx.Set<Group>().FindAsync(groupId) ?? throw new ArgumentException(nameof(userId));
@@ -18,8 +18,8 @@ namespace Infrastructure.UserManager.Controllers
             return Ok(new StandardResponse(true, "", null));
         }
 
-        [HttpDelete("{groupId:int}/[action]/{userId:int}")]
-        public async Task<ActionResult> RemoveUserFromGroup(int groupId, int userId)
+        [HttpDelete("{groupId}/[action]/{userId}")]
+        public async Task<ActionResult> RemoveUserFromGroup(Guid groupId, Guid userId)
         {
             Group group = await ctx.Set<Group>().FindAsync(groupId) ?? throw new ArgumentException(nameof(userId));
             await group.RemoveUserFromGroupAsync(userId, ctx);

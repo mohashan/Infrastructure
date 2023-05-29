@@ -8,12 +8,12 @@ namespace Infrastructure.BaseUserManager.Models
     {
 
         [ForeignKey(nameof(User))]
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         [JsonIgnore]
         public virtual User User { get; set; }
 
         [ForeignKey(nameof(Feature))]
-        public int FeatureId { get; set; }
+        public Guid FeatureId { get; set; }
         [JsonIgnore]
         public virtual Feature Feature { get; set; }
 
@@ -22,24 +22,24 @@ namespace Infrastructure.BaseUserManager.Models
 
     public class UserFeatureCreateDto : BaseCreateDto<UserFeature, UserFeatureCreateDto, UserFeatureReadDto,UserFeatureListDto>
     {
-        public int UserId { get; set; }
-        public int FeatureId { get; set; }
+        public Guid UserId { get; set; }
+        public Guid FeatureId { get; set; }
         public string Value { get; set; } = string.Empty;
 
 
     }
     public class UserFeatureReadDto : BaseReadDto<UserFeature, UserFeatureCreateDto, UserFeatureReadDto, UserFeatureListDto>
     {
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public string UserName { get; set; } = string.Empty;
-        public int FeatureId { get; set; }
+        public Guid FeatureId { get; set; }
         public string FeatureName { get; set; } = string.Empty;
         public string Value { get; set; } = string.Empty;
     }
     public class UserFeatureListDto : BaseListDto<UserFeature, UserFeatureCreateDto, UserFeatureReadDto, UserFeatureListDto>
     {
-        public int UserId { get; set; }
-        public int FeatureId { get; set; }
+        public Guid UserId { get; set; }
+        public Guid FeatureId { get; set; }
         public string Value { get; set; } = string.Empty;
 
 

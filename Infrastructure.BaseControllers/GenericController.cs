@@ -9,10 +9,11 @@ namespace Infrastructure.BaseControllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class GenericController<TEntity, TDto, TReadDto> : ControllerBase
-    where TEntity : BaseEntity<TEntity, TDto, TReadDto>
-    where TDto : BaseDto<TEntity, TDto, TReadDto>
-    where TReadDto : BaseReadDto<TEntity, TDto, TReadDto>
+    public class GenericController<TEntity, TCreateDto, TReadDto,TListDto> : ControllerBase
+    where TEntity : BaseEntity<TEntity, TCreateDto, TReadDto, TListDto>
+    where TCreateDto : BaseCreateDto<TEntity, TCreateDto, TReadDto, TListDto>
+    where TReadDto : BaseReadDto<TEntity, TCreateDto, TReadDto, TListDto>
+    where TListDto : BaseListDto<TEntity, TCreateDto, TReadDto, TListDto>
     {
         protected readonly ApplicationDbContext ctx;
         private readonly AutoMapper.IConfigurationProvider configurationProvider;
@@ -27,12 +28,12 @@ namespace Infrastructure.BaseControllers
         [HttpGet]
         public async Task<ActionResult> Index(int count = 10, int pageNumber = 1)
         {
-            IQueryable? result = ctx.Set<TEntity>().Skip(count * (pageNumber - 1)).Take(count).AsNoTracking().ProjectTo(typeof(TReadDto), configurationProvider);
+            IQueryable? result = ctx.Set<TEntity>().Skip(count * (pageNumber - 1)).Take(count).AsNoTracking().ProjectTo(typeof(TListDto), configurationProvider);
             return Ok(new StandardResponse<IQueryable>(true, null, result));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> Details(int id)
+        public async Task<ActionResult> Details(Guid id)
         {
             TEntity? item = (await ctx.Set<TEntity>().FindAsync(id)) ?? throw new ArgumentException($"There is no entry with this id(id:{id})");
 
@@ -40,7 +41,7 @@ namespace Infrastructure.BaseControllers
         }
 
         [HttpPost]
-        public virtual async Task<ActionResult> Create([FromBody] TDto dto)
+        public virtual async Task<ActionResult> Create([FromBody] TCreateDto dto)
         {
             if (dto == null)
             {
@@ -65,15 +66,15 @@ namespace Infrastructure.BaseControllers
                 new { id = entity.Id }, new StandardResponse<TReadDto>(true, null, entity.GetReadDto(mapper)));
         }
 
-        [HttpPatch("{id:int}")]
-        public ActionResult<TEntity> PartiallyUpdate(int id, [FromBody] JsonPatchDocument<TDto> patchDoc)
+        [HttpPatch("{id}")]
+        public ActionResult<TEntity> PartiallyUpdate(Guid id, [FromBody] JsonPatchDocument<TCreateDto> patchDoc)
         {
             if (patchDoc == null)
             {
                 throw new ArgumentNullException(nameof(patchDoc));
             }
 
-            TDto? existingDto = (ctx.Set<TEntity>().Find(id) ?? throw new ArgumentException($"There is no entry with id : {id}")).GetDto(mapper);
+            TCreateDto? existingDto = (ctx.Set<TEntity>().Find(id) ?? throw new ArgumentException($"There is no entry with id : {id}")).GetCreateDto(mapper);
 
 
             patchDoc.ApplyTo(existingDto);
@@ -91,8 +92,8 @@ namespace Infrastructure.BaseControllers
             return Ok(new StandardResponse<TEntity>(true, null, entity));
         }
 
-        [HttpDelete("{id:int}")]
-        public ActionResult Remove(int id)
+        [HttpDelete("{id}")]
+        public ActionResult Remove(Guid id)
         {
             TEntity? entity = ctx.Set<TEntity>().Find(id) ?? throw new ArgumentException($"There is no entry with id : {id}");
 
@@ -106,8 +107,8 @@ namespace Infrastructure.BaseControllers
             return NoContent();
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult<TEntity>> Update(int id, [FromBody] TDto dto)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<TEntity>> Update(Guid id, [FromBody] TCreateDto dto)
         {
             if (dto == null)
             {
@@ -122,7 +123,7 @@ namespace Infrastructure.BaseControllers
             ctx.Entry<TEntity>(existingItem).State = EntityState.Modified;
             ctx.SaveChanges();
 
-            return Ok(new StandardResponse<TDto>(true, null, existingItem.GetDto(mapper)));
+            return Ok(new StandardResponse<TCreateDto>(true, null, existingItem.GetCreateDto(mapper)));
         }
     }
 }

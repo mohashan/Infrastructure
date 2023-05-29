@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Infrastructure.UserManager.Controllers
 {
-    public class UserController : GenericController<User,UserDto,UserReadDto>
+    public class UserController : GenericController<User,UserCreateDto,UserReadDto,UserListDto>
     {
         public UserController(UserManagerDbContext ctx, AutoMapper.IConfigurationProvider cfg) : base(ctx, cfg)
         {
