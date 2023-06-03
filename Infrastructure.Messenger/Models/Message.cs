@@ -11,11 +11,11 @@ namespace Infrastructure.Messenger.Models
     public class Message : BaseEntity<Message, MessageCreateDto, MessageReadDto, MessageListDto>
     {
         [ForeignKey(nameof(Channel))]
-        public int ChannelId { get; set; }
+        public Guid ChannelId { get; set; }
         public Channel Channel { get; set; } 
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         [ForeignKey(nameof(Template))]
-        public int TemplateId { get; set; }
+        public Guid TemplateId { get; set; }
         public Template Template { get; set; } 
         public string? Parameters { get; set; }
         public MessageState State { get; set; }
@@ -47,18 +47,18 @@ namespace Infrastructure.Messenger.Models
     }
     public class MessageCreateDto: BaseCreateDto<Message, MessageCreateDto, MessageReadDto, MessageListDto>
     {
-        public int ChannelId { get; set; }
-        public int UserId { get; set; }
-        public int TemplateId { get; set; }
+        public Guid ChannelId { get; set; }
+        public Guid UserId { get; set; }
+        public Guid TemplateId { get; set; }
         public string? Parameters { get; set; }
 
     }
     public class MessageReadDto: BaseReadDto<Message, MessageCreateDto, MessageReadDto, MessageListDto>
     {
-        public int ChannelId { get; set; }
+        public Guid ChannelId { get; set; }
         public string? ChannelTitle { get; set; }
-        public int UserId { get; set; }
-        public int TemplateId { get; set; }
+        public Guid UserId { get; set; }
+        public Guid TemplateId { get; set; }
         public string? TemplateTitle { get; set; }
         public string? Parameters { get; set; }
         public string? MessageState { get; set; }
@@ -69,9 +69,9 @@ namespace Infrastructure.Messenger.Models
 
     public class MessageListDto : BaseListDto<Message, MessageCreateDto, MessageReadDto,MessageListDto>
     {
-        public int ChannelId { get; set; }
-        public int UserId { get; set; }
-        public int TemplateId { get; set; }
+        public Guid ChannelId { get; set; }
+        public Guid UserId { get; set; }
+        public Guid TemplateId { get; set; }
         public string? Parameters { get; set; }
         public string? MessageState { get; set; }
     }

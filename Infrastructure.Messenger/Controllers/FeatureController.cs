@@ -1,61 +1,61 @@
-﻿using AutoMapper;
-using Infrastructure.BaseControllers;
-using Infrastructure.Messenger.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿//using AutoMapper;
+//using Infrastructure.BaseControllers;
+//using Infrastructure.Messenger.Models;
+//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Messenger.Controllers
-{
-    public class FeatureController:GenericController<Feature,FeatureDto,FeatureReadDto>
-    {
+//namespace Infrastructure.Messenger.Controllers
+//{
+//    public class FeatureController:GenericController<Feature,FeatureDto,FeatureReadDto>
+//    {
 
-        public FeatureController(MessengerDbContext ctx,AutoMapper.IConfigurationProvider cfg):base(ctx, cfg)
-        {
-        }
+//        public FeatureController(MessengerDbContext ctx,AutoMapper.IConfigurationProvider cfg):base(ctx, cfg)
+//        {
+//        }
 
-        [HttpGet("{FeatureId:int}/[action]/{ContactId:int}")]
-        public async Task<ActionResult> GetByContactId(int FeatureId, int ContactId)
-        {
-            var result = (await ctx.Set<ContactFeature>().Include(c=>c.Feature).
-                                FirstOrDefaultAsync(c=>c.FeatureId == FeatureId && c.ContactId == ContactId))?
-                                .GetReadDto(mapper);
+//        [HttpGet("{FeatureId:int}/[action]/{ContactId:int}")]
+//        public async Task<ActionResult> GetByContactId(int FeatureId, int ContactId)
+//        {
+//            var result = (await ctx.Set<ContactFeature>().Include(c=>c.Feature).
+//                                FirstOrDefaultAsync(c=>c.FeatureId == FeatureId && c.ContactId == ContactId))?
+//                                .GetReadDto(mapper);
 
-            if(result == null)
-                return NotFound();
+//            if(result == null)
+//                return NotFound();
 
-            return Ok(result);
-        }
+//            return Ok(result);
+//        }
 
-        [HttpPost("{FeatureId:int}/[action]/{ContactId:int}")]
-        public async Task<ActionResult> SetByContactId(int FeatureId, int ContactId, [FromBody] ContactFeatureDto dto)
-        {
-            var existEntity = await ctx.Set<ContactFeature>().Include(c => c.Feature).
-                                FirstOrDefaultAsync(c => c.FeatureId == FeatureId && c.ContactId == ContactId);
-            ContactFeature entity = dto.GetEntity(mapper);
-            if (existEntity == null)
-            {
-                existEntity = new ContactFeature
-                {
-                    ContactId = ContactId,
-                    FeatureId = FeatureId,
-                    Value = dto.Value,
-                };
-                ctx.Set<ContactFeature>().Add(existEntity);
-            }
-            else
-            {
-                existEntity.Value = dto.Value;
-                ctx.Entry(existEntity).State = EntityState.Modified;
-            }
-            try
-            {
-                ctx.SaveChanges();
-            }
-            catch (Exception)
-            {
-                return BadRequest("Could not Save changes");
-            }
-            return CreatedAtAction(nameof(GetByContactId),new { FeatureId, ContactId }, existEntity.GetReadDto(mapper));
-        }
-    }
-}
+//        [HttpPost("{FeatureId:int}/[action]/{ContactId:int}")]
+//        public async Task<ActionResult> SetByContactId(int FeatureId, int ContactId, [FromBody] ContactFeatureDto dto)
+//        {
+//            var existEntity = await ctx.Set<ContactFeature>().Include(c => c.Feature).
+//                                FirstOrDefaultAsync(c => c.FeatureId == FeatureId && c.ContactId == ContactId);
+//            ContactFeature entity = dto.GetEntity(mapper);
+//            if (existEntity == null)
+//            {
+//                existEntity = new ContactFeature
+//                {
+//                    ContactId = ContactId,
+//                    FeatureId = FeatureId,
+//                    Value = dto.Value,
+//                };
+//                ctx.Set<ContactFeature>().Add(existEntity);
+//            }
+//            else
+//            {
+//                existEntity.Value = dto.Value;
+//                ctx.Entry(existEntity).State = EntityState.Modified;
+//            }
+//            try
+//            {
+//                ctx.SaveChanges();
+//            }
+//            catch (Exception)
+//            {
+//                return BadRequest("Could not Save changes");
+//            }
+//            return CreatedAtAction(nameof(GetByContactId),new { FeatureId, ContactId }, existEntity.GetReadDto(mapper));
+//        }
+//    }
+//}

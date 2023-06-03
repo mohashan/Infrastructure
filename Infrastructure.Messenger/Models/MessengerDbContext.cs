@@ -1,15 +1,29 @@
 ﻿using Infrastructure.BaseDomain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Infrastructure.Messenger.Models
 {
     public class MessengerDbContext : ApplicationDbContext
     {
+        public MessengerDbContext():base()
+        {
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            RegisterEntitiesForDbSet(modelBuilder, Assembly.GetExecutingAssembly().GetName().Name);
+
+
+            Guid feature1 = new Guid("15010239-CFB7-4831-B83E-142B912AFF3A");
+            Guid feature2 = new Guid("A292472D-2605-4C36-80ED-F012A04A2953");
+            Guid feature3 = new Guid("A292472D-2605-4C36-80ED-F012A04A2953");
+            Guid feature4 = new Guid("1C71CC50-FF8B-4F9B-B38F-9068297FC093");
+            Guid feature5 = new Guid("B0CAF7D1-9937-46A4-BB1A-DDD7E6F57F3C");
+            Guid feature6 = new Guid("7EC91532-A479-4759-B5C9-21C3A0493769");
 
             Guid channel1 = Guid.NewGuid();
             Guid channel2 = Guid.NewGuid();
@@ -19,7 +33,7 @@ namespace Infrastructure.Messenger.Models
                 {
                     Id=channel1,
                     Name = "SMS",
-                    FeatureId = Guid.NewGuid(), // Must replace with valid guid
+                    FeatureId = feature6,
                     EndPoint = "https://sms.MyServices.com/Send",
                     HttpRequestBody = @"{to:'@to',text:'@text'}"
                 },
@@ -27,7 +41,7 @@ namespace Infrastructure.Messenger.Models
                 {
                     Id = channel2,
                     Name = "e-Mail" ,
-                    FeatureId = Guid.NewGuid(), // Must replace with valid guid
+                    FeatureId = feature5,
                     EndPoint = "https://EMail.MyServices.com/Send",
                     HttpRequestBody = @"{to:'@to',text:'@text'}"
                 },

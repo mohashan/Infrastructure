@@ -2,6 +2,7 @@
 using AutoMapper.Features;
 using Infrastructure.BaseControllers;
 using Infrastructure.BaseTools;
+using Infrastructure.BaseUserManager.Models;
 using Infrastructure.Messenger.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.IIS.Core;
@@ -11,7 +12,7 @@ using System.Text;
 
 namespace Infrastructure.Messenger.Controllers
 {
-    public class MessageController : GenericController<Message, MessageDto, MessageReadDto>
+    public class MessageController : GenericController<Message, MessageCreateDto, MessageReadDto,MessageListDto>
     {
         private readonly IHttpRequester httpClient;
 
@@ -21,7 +22,7 @@ namespace Infrastructure.Messenger.Controllers
         }
 
         [HttpPost]
-        public override async Task<ActionResult> Create([FromBody] MessageDto dto)
+        public override async Task<ActionResult> Create([FromBody] MessageCreateDto dto)
         {
             if (dto == null)
             {
@@ -44,24 +45,24 @@ namespace Infrastructure.Messenger.Controllers
         }
 
         [HttpPost("[action]/{groupId:int}")]
-        public async Task<ActionResult> SendToGroup(int groupId, [FromBody] MessageDto dto)
+        public async Task<ActionResult> SendToGroup(Guid groupId, [FromBody] MessageCreateDto dto)
         {
-            if (dto == null || groupId == 0)
+            if (dto == null || groupId == new Guid())
             {
                 return BadRequest();
             }
 
-            var contacts = ctx.Set<ContactGroup>().Where(c => c.GroupId == groupId).ToList();
-            MessageDto messageDto;
+            var contacts = ctx.Set<UserGroup>().Where(c => c.GroupId == groupId).ToList();
+            MessageCreateDto messageDto;
             Message message;
-            List<KeyValuePair<int, string>> Errors = new List<KeyValuePair<int, string>>();
+            List<KeyValuePair<Guid, string>> Errors = new List<KeyValuePair<Guid, string>>();
             foreach (var item in contacts)
             {
-                messageDto = new MessageDto
+                messageDto = new MessageCreateDto
                 {
                     Name = dto.Name ?? item.Name,
                     ChannelId = dto.ChannelId,
-                    ContactId = item.ContactId,
+                    UserId = item.UserId,
                     TemplateId = dto.TemplateId,
                     Parameters = dto.Parameters
                 };
@@ -72,14 +73,14 @@ namespace Infrastructure.Messenger.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Errors.Add(new KeyValuePair<int, string>(item.ContactId, ex.Message));
+                    Errors.Add(new KeyValuePair<Guid, string>(item.UserId, ex.Message));
                 }
             }
 
-            return Ok(new StandardResponse<List<KeyValuePair<int,string>>>(Errors.Any()?false:true,$"Message sent to group with {Errors.Count} error(s)", Errors));
+            return Ok(new StandardResponse<List<KeyValuePair<Guid,string>>>(Errors.Any()?false:true,$"Message sent to group with {Errors.Count} error(s)", Errors));
         }
 
-        private async Task<Message> SendMessage(MessageDto dto)
+        private async Task<Message> SendMessage(MessageCreateDto dto)
         {
 
             var entity = dto.GetEntity(mapper);
@@ -87,7 +88,7 @@ namespace Infrastructure.Messenger.Controllers
             Template template = ctx.Set<Template>().Find(dto.TemplateId) ?? throw new Exception("Template is not defined");
             Channel channel = ctx.Set<Channel>().Find(dto.ChannelId) ?? throw new Exception("Channel is not defined");
 
-            var recipient = (await ctx.Set<ContactFeature>().FirstOrDefaultAsync(c => c.ContactId == dto.ContactId && c.FeatureId == channel.FeatureId)) ??
+            var recipient = (await ctx.Set<UserFeature>().FirstOrDefaultAsync(c => c.UserId == dto.UserId && c.FeatureId == channel.FeatureId)) ??
                 throw new Exception("Message recipient not found");
 
             entity.FillSentText(template.Body, channel.HttpRequestBody ?? string.Empty, recipient.Value);

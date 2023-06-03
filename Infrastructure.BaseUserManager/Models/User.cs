@@ -1,4 +1,5 @@
-﻿using Infrastructure.BaseDomain;
+﻿using AutoMapper.Features;
+using Infrastructure.BaseDomain;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -72,6 +73,19 @@ namespace Infrastructure.BaseUserManager.Models
             var userFeatures = await context.Set<UserFeature>().Where(c => c.UserId == user.Id).Select(c=> new KeyValuePair<Guid, string>(c.FeatureId,c.Value)).ToListAsync();
 
             return userFeatures;
+        }
+    
+        public static async Task<bool> RemoveFeatureValue(this User user, Guid featureId,ApplicationDbContext context)
+        {
+            UserFeature userFeature = await context.Set<UserFeature>().FirstOrDefaultAsync(c => c.UserId == user.Id && c.FeatureId == featureId)
+                ?? throw new ArgumentException(nameof(featureId));
+
+            userFeature.DeleteEntity();
+
+            context.Entry(userFeature).State = EntityState.Modified;
+
+            return ((await context.SaveChangesAsync()) > 0);
+
         }
     }
 }

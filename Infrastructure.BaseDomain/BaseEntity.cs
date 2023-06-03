@@ -24,6 +24,12 @@ namespace Infrastructure.BaseDomain
         public bool IsDeleted { get; set; } = false;
 
 
+        public void DeleteEntity()
+        {
+            this.IsDeleted = true;
+            this.DeleteDate = DateTime.Now;
+        }
+
 
         public virtual TReadDto GetReadDto(IMapper mapper)
         {
