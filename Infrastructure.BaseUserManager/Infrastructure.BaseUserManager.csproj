@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Infrastructure.BaseDataProvider\Infrastructure.BaseDataProvider.csproj" />
     <ProjectReference Include="..\Infrastructure.BaseDomain\Infrastructure.BaseDomain.csproj" />
     <ProjectReference Include="..\Infrastructure.BaseTools\Infrastructure.BaseTools.csproj" />
   </ItemGroup>

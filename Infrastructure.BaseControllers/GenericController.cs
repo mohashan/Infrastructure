@@ -1,4 +1,5 @@
 ﻿using AutoMapper.QueryableExtensions;
+using Infrastructure.BaseDataProvider.Repository;
 using Infrastructure.BaseDomain;
 using Infrastructure.BaseTools;
 using Microsoft.AspNetCore.JsonPatch;
@@ -17,113 +18,56 @@ namespace Infrastructure.BaseControllers
     {
         protected readonly ApplicationDbContext ctx;
         private readonly AutoMapper.IConfigurationProvider configurationProvider;
+        private readonly IBaseRepository<TEntity, TCreateDto, TReadDto, TListDto> repo;
         protected readonly AutoMapper.Mapper mapper;
 
-        public GenericController(ApplicationDbContext context, AutoMapper.IConfigurationProvider configurationProvider)
+        public GenericController(ApplicationDbContext context, AutoMapper.IConfigurationProvider configurationProvider,IBaseRepository<TEntity,TCreateDto,TReadDto,TListDto> repo)
         {
             this.ctx = context;
             this.configurationProvider = configurationProvider;
+            this.repo = repo;
             mapper = new AutoMapper.Mapper(configurationProvider);
         }
         [HttpGet]
         public async Task<ActionResult> Index(int count = 10, int pageNumber = 1)
         {
-            IQueryable? result = ctx.Set<TEntity>().Skip(count * (pageNumber - 1)).Take(count).AsNoTracking().ProjectTo(typeof(TListDto), configurationProvider);
-            return Ok(new StandardResponse<IQueryable>(true, null, result));
+            return Ok(await repo.GetAll().Skip(count * (pageNumber - 1)).Take(count).ToListAsync());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult> Details(Guid id)
         {
-            TEntity? item = (await ctx.Set<TEntity>().FindAsync(id)) ?? throw new ArgumentException($"There is no entry with this id(id:{id})");
-
-            return Ok(new StandardResponse<TReadDto>(true, null, item.GetReadDto(mapper)));
+            return Ok(await repo.GetAsync(id));
         }
 
         [HttpPost]
         public virtual async Task<ActionResult> Create([FromBody] TCreateDto dto)
         {
-            if (dto == null)
-            {
-                throw new ArgumentNullException(nameof(dto));
-            }
-
-            TEntity? entity = dto.GetEntity(mapper);
-
-            try
-            {
-                ctx.Set<TEntity>().Add(entity);
-                await ctx.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new ArgumentException("Create new Entity failed");
-            }
-
-
-
-            return CreatedAtAction(nameof(Details),
-                new { id = entity.Id }, new StandardResponse<TReadDto>(true, null, entity.GetReadDto(mapper)));
+            TReadDto readDto = await repo.CreateAsync(dto);
+            return CreatedAtAction(nameof(Details),new { id = readDto.Id}, await repo.CreateAsync(dto));
         }
 
         [HttpPatch("{id}")]
-        public ActionResult<TEntity> PartiallyUpdate(Guid id, [FromBody] JsonPatchDocument<TCreateDto> patchDoc)
+        public async Task<ActionResult> PartiallyUpdate(Guid id, [FromBody] JsonPatchDocument<TCreateDto> patchDoc)
         {
             if (patchDoc == null)
             {
                 throw new ArgumentNullException(nameof(patchDoc));
             }
 
-            TCreateDto? existingDto = (ctx.Set<TEntity>().Find(id) ?? throw new ArgumentException($"There is no entry with id : {id}")).GetCreateDto(mapper);
-
-
-            patchDoc.ApplyTo(existingDto);
-
-            TEntity? entity = existingDto.GetEntity(mapper);
-
-            TryValidateModel(entity);
-
-            ctx.Set<TEntity>().Update(entity);
-
-
-            ctx.SaveChanges();
-
-
-            return Ok(new StandardResponse<TEntity>(true, null, entity));
+            return Ok(await repo.PartialUpdateAsync(id, patchDoc));
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Remove(Guid id)
+        public async Task<ActionResult> Remove(Guid id)
         {
-            TEntity? entity = ctx.Set<TEntity>().Find(id) ?? throw new ArgumentException($"There is no entry with id : {id}");
-
-
-            entity.IsDeleted = true;
-            entity.DeleteDate = DateTime.Now;
-            ctx.Entry<TEntity>(entity).State = EntityState.Modified;
-
-            ctx.SaveChanges();
-
-            return NoContent();
+            return (await repo.DeleteAsync(id)?NoContent():BadRequest());
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<TEntity>> Update(Guid id, [FromBody] TCreateDto dto)
         {
-            if (dto == null)
-            {
-                throw new ArgumentNullException(nameof(dto));
-            }
-
-            if (!await ctx.Set<TEntity>().AnyAsync(c => c.Id == id))
-                throw new ArgumentException($"There is no entry with id : {id}");
-
-            TEntity existingItem = dto.GetEntity(mapper);
-            existingItem.Id = id;
-            ctx.Entry<TEntity>(existingItem).State = EntityState.Modified;
-            ctx.SaveChanges();
-
-            return Ok(new StandardResponse<TCreateDto>(true, null, existingItem.GetCreateDto(mapper)));
+            return Ok(await repo.UpdateAsync(dto));
         }
     }
 }

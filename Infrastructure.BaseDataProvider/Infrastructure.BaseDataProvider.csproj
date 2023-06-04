@@ -7,9 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Infrastructure.BaseDataProvider\Infrastructure.BaseDataProvider.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="7.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Infrastructure.BaseDomain\Infrastructure.BaseDomain.csproj" />
-    <ProjectReference Include="..\Infrastructure.BaseTools\Infrastructure.BaseTools.csproj" />
   </ItemGroup>
 
 </Project>

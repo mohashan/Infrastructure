@@ -1,5 +1,6 @@
 using Infrastructure.BaseControllers;
 using Infrastructure.BaseTools;
+using Infrastructure.BaseUserManager.IRepository;
 using Infrastructure.BaseUserManager.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,23 +8,24 @@ namespace Infrastructure.UserManager.Controllers
 {
     public class GroupController : GenericController<Group,GroupCreateDto,GroupReadDto,GroupListDto>
     {
-        public GroupController(UserManagerDbContext ctx, AutoMapper.IConfigurationProvider cfg) : base(ctx, cfg)
+        private readonly IGroupRepositiry groupRepo;
+
+        public GroupController(UserManagerDbContext ctx, AutoMapper.IConfigurationProvider cfg,IGroupRepositiry groupRepo) : base(ctx, cfg)
         {
+            this.groupRepo = groupRepo;
         }
         [HttpPost("{groupId}/[action]/{userId}")]
-        public async Task<ActionResult> AddUserToGroup(int groupId,int userId)
+        public async Task<ActionResult> AddUserToGroup(Guid groupId,Guid userId)
         {
-            Group group = await ctx.Set<Group>().FindAsync(groupId) ?? throw new ArgumentException(nameof(userId));
-            await group.AddUserToGroupAsync(userId, ctx);
-            return Ok(new StandardResponse(true, "", null));
+            string Name = $"{groupId}:{userId}";
+            return Ok(await groupRepo.AddUserToGroupAsync(groupId, userId, Name));
         }
 
         [HttpDelete("{groupId}/[action]/{userId}")]
         public async Task<ActionResult> RemoveUserFromGroup(Guid groupId, Guid userId)
         {
-            Group group = await ctx.Set<Group>().FindAsync(groupId) ?? throw new ArgumentException(nameof(userId));
-            await group.RemoveUserFromGroupAsync(userId, ctx);
-            return Ok(new StandardResponse(true, "", null));
+            await groupRepo.RemoveUserFromGroupAsync(groupId, userId);
+            return Ok();
         }
     }
 }
