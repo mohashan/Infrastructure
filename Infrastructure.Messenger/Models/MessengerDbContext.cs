@@ -3,19 +3,21 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace Infrastructure.Messenger.Models
 {
     public class MessengerDbContext : ApplicationDbContext
     {
-        public MessengerDbContext():base()
+        public MessengerDbContext(DbContextOptions options):base(options)
         {
+            RegisterEntitiesForDbSet(Assembly.GetExecutingAssembly());
+
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            RegisterEntitiesForDbSet(modelBuilder, Assembly.GetExecutingAssembly().GetName().Name);
 
 
             Guid feature1 = new Guid("15010239-CFB7-4831-B83E-142B912AFF3A");

@@ -1,4 +1,5 @@
 using Infrastructure.BaseControllers;
+using Infrastructure.BaseDataProvider.Repository;
 using Infrastructure.BaseTools;
 using Infrastructure.BaseUserManager.IRepository;
 using Infrastructure.BaseUserManager.Models;
@@ -11,7 +12,7 @@ namespace Infrastructure.UserManager.Controllers
     {
         private readonly IUserRepositiry userRepo;
 
-        public UserController(UserManagerDbContext ctx, AutoMapper.IConfigurationProvider cfg,IUserRepositiry userRepo) : base(ctx, cfg)
+        public UserController(UserManagerDbContext ctx, AutoMapper.IConfigurationProvider cfg,IUserRepositiry userRepo) : base(ctx, cfg, userRepo)
         {
             this.userRepo = userRepo;
         }

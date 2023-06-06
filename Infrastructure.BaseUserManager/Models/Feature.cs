@@ -1,4 +1,6 @@
 ﻿using Infrastructure.BaseDomain;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -18,6 +20,13 @@ namespace Infrastructure.BaseUserManager.Models
         public string? Description { get; set; }
         [JsonIgnore]
         public virtual ICollection<UserFeature> UserFeatures { get; set; }
+    }
+
+    class FeatureEntityConfiguration : IEntityTypeConfiguration<Feature>
+    {
+        public void Configure(EntityTypeBuilder<Feature> builder)
+        {
+        }
     }
 
     public class FeatureCreateDto : BaseCreateDto<Feature, FeatureCreateDto, FeatureReadDto, FeatureListDto>

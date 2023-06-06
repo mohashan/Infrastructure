@@ -1,4 +1,5 @@
 using Infrastructure.BaseControllers;
+using Infrastructure.BaseDataProvider.Repository;
 using Infrastructure.BaseTools;
 using Infrastructure.BaseUserManager.IRepository;
 using Infrastructure.BaseUserManager.Models;
@@ -10,7 +11,7 @@ namespace Infrastructure.UserManager.Controllers
     {
         private readonly IGroupRepositiry groupRepo;
 
-        public GroupController(UserManagerDbContext ctx, AutoMapper.IConfigurationProvider cfg,IGroupRepositiry groupRepo) : base(ctx, cfg)
+        public GroupController(UserManagerDbContext ctx, AutoMapper.IConfigurationProvider cfg,IGroupRepositiry groupRepo) : base(ctx, cfg, groupRepo)
         {
             this.groupRepo = groupRepo;
         }

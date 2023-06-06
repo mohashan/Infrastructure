@@ -1,4 +1,6 @@
 ﻿using Infrastructure.BaseDomain;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.BaseUserManager.Models
 {
@@ -6,6 +8,13 @@ namespace Infrastructure.BaseUserManager.Models
     {
 
 
+    }
+
+    class UserTypeEntityConfiguration : IEntityTypeConfiguration<UserType>
+    {
+        public void Configure(EntityTypeBuilder<UserType> builder)
+        {
+        }
     }
 
     public class UserTypeCreateDto : BaseCreateDto<UserType, UserTypeCreateDto, UserTypeReadDto, UserTypeListDto>

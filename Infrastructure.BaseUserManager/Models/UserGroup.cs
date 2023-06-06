@@ -1,4 +1,6 @@
 ﻿using Infrastructure.BaseDomain;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Infrastructure.BaseUserManager.Models
@@ -12,6 +14,13 @@ namespace Infrastructure.BaseUserManager.Models
         public Guid GroupId { get; set; }
         public Group Group { get; set; }
 
+    }
+
+    class UserGroupEntityConfiguration : IEntityTypeConfiguration<UserGroup>
+    {
+        public void Configure(EntityTypeBuilder<UserGroup> builder)
+        {
+        }
     }
 
     public class UserGroupCreateDto : BaseCreateDto<UserGroup, UserGroupCreateDto, UserGroupReadDto, UserGroupListDto>

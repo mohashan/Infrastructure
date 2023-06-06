@@ -1,4 +1,6 @@
 ﻿using Infrastructure.BaseDomain;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -18,6 +20,13 @@ namespace Infrastructure.BaseUserManager.Models
         public virtual Feature Feature { get; set; }
 
         public string Value { get; set; } = string.Empty;
+    }
+
+    class UserFeatureEntityConfiguration : IEntityTypeConfiguration<UserFeature>
+    {
+        public void Configure(EntityTypeBuilder<UserFeature> builder)
+        {
+        }
     }
 
     public class UserFeatureCreateDto : BaseCreateDto<UserFeature, UserFeatureCreateDto, UserFeatureReadDto,UserFeatureListDto>

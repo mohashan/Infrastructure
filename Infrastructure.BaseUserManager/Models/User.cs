@@ -1,6 +1,7 @@
 ﻿using AutoMapper.Features;
 using Infrastructure.BaseDomain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -18,6 +19,13 @@ namespace Infrastructure.BaseUserManager.Models
 
         public virtual ICollection<UserGroup>? UserGroup { get; set; }
 
+    }
+
+    class UserEntityConfiguration : IEntityTypeConfiguration<User>
+    {
+        public void Configure(EntityTypeBuilder<User> builder)
+        {
+        }
     }
 
     public class UserCreateDto : BaseCreateDto<User, UserCreateDto, UserReadDto, UserListDto>

@@ -1,4 +1,5 @@
-﻿using Infrastructure.BaseUserManager.Models;
+﻿using Infrastructure.BaseDataProvider.Repository;
+using Infrastructure.BaseUserManager.Models;
 
 namespace Infrastructure.BaseUserManager.IRepository
 {

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.Features;
 using Infrastructure.BaseControllers;
+using Infrastructure.BaseDataProvider.Repository;
 using Infrastructure.BaseTools;
 using Infrastructure.BaseUserManager.Models;
 using Infrastructure.Messenger.Models;
@@ -16,7 +17,9 @@ namespace Infrastructure.Messenger.Controllers
     {
         private readonly IHttpRequester httpClient;
 
-        public MessageController(IHttpRequester httpClient, MessengerDbContext ctx, AutoMapper.IConfigurationProvider cfg) : base(ctx, cfg)
+        public MessageController(IHttpRequester httpClient, MessengerDbContext ctx
+            , AutoMapper.IConfigurationProvider cfg
+            , IBaseRepository<Message, MessageCreateDto, MessageReadDto, MessageListDto> repo) : base(ctx, cfg,repo)
         {
             this.httpClient = httpClient;
         }

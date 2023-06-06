@@ -1,14 +1,23 @@
 ﻿using Infrastructure.BaseDomain;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Infrastructure.BaseUserManager.Models
 {
     public class UserManagerDbContext : ApplicationDbContext
     {
+        public UserManagerDbContext(DbContextOptions options):base(options)
+        {
+            
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetAssembly(typeof(UserManagerDbContext)));
+
+
             Guid Usertype1 = Guid.NewGuid();
             Guid Usertype2 = Guid.NewGuid();
             Guid Usertype3 = Guid.NewGuid();
@@ -43,12 +52,12 @@ namespace Infrastructure.BaseUserManager.Models
             });
             modelBuilder.Entity<UserGroup>().HasIndex(c => new { c.UserId, c.GroupId });
 
-            Guid feature1 = new Guid("15010239-CFB7-4831-B83E-142B912AFF3A");
-            Guid feature2 = new Guid("A292472D-2605-4C36-80ED-F012A04A2953");
-            Guid feature3 = new Guid("A292472D-2605-4C36-80ED-F012A04A2953");
-            Guid feature4 = new Guid("1C71CC50-FF8B-4F9B-B38F-9068297FC093");
-            Guid feature5 = new Guid("B0CAF7D1-9937-46A4-BB1A-DDD7E6F57F3C");
-            Guid feature6 = new Guid("7EC91532-A479-4759-B5C9-21C3A0493769");
+            Guid feature1 = Guid.NewGuid();
+            Guid feature2 = Guid.NewGuid();
+            Guid feature3 = Guid.NewGuid();
+            Guid feature4 = Guid.NewGuid();
+            Guid feature5 = Guid.NewGuid();
+            Guid feature6 = Guid.NewGuid();
             modelBuilder.Entity<Feature>().HasQueryFilter(c => !c.IsDeleted).HasData(new Feature[]
             {
                 new Feature { Id= feature1,Name = "FullName" },
