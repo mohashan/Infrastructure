@@ -15,12 +15,12 @@ namespace Infrastructure.UserManager
 
             // Add services to the container.
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            builder.Services.RegisterUserManager();
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"),b=>b.MigrationsAssembly("Infrastructure.UserManager"));
-            });
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            builder.Services.RegisterUserManager(builder.Configuration.GetConnectionString("SqlServer"));
+
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
