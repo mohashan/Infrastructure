@@ -17,11 +17,11 @@ namespace Infrastructure.BaseDomain
             
         }
 
-        public static void RegisterEntitiesForDbSet(Assembly assembly)
-        {
-            var entities = assembly.GetTypes().Where(c => c.IsIEntityTypeConfiguration()).ToList();
+        //public static void RegisterEntitiesForDbSet(Assembly assembly)
+        //{
+        //    var entities = assembly.GetTypes().Where(c => c.IsIEntityTypeConfiguration()).ToList();
 
-        }
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

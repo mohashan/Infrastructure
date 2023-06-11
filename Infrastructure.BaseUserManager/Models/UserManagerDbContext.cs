@@ -1,5 +1,6 @@
 ﻿using Infrastructure.BaseDomain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -7,10 +8,16 @@ namespace Infrastructure.BaseUserManager.Models
 {
     public class UserManagerDbContext : ApplicationDbContext
     {
-        public UserManagerDbContext(DbContextOptions options):base(options)
+        public UserManagerDbContext(DbContextOptions options) : base(options)
         {
-            
         }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserType> UserTypes { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<UserGroup> UserGroups { get; set; }
+        public DbSet<Feature> Features { get; set; }
+        public DbSet<UserFeature> UserFeatures { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -11,7 +11,7 @@ namespace Infrastructure.Messenger.Models
     {
         public MessengerDbContext(DbContextOptions options):base(options)
         {
-            RegisterEntitiesForDbSet(Assembly.GetExecutingAssembly());
+            //RegisterEntitiesForDbSet(Assembly.GetExecutingAssembly());
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
