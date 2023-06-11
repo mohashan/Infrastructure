@@ -1,4 +1,5 @@
-﻿using Infrastructure.BaseUserManager.IRepository;
+﻿using Infrastructure.BaseDomain;
+using Infrastructure.BaseUserManager.IRepository;
 using Infrastructure.BaseUserManager.Models;
 using Infrastructure.BaseUserManager.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ public static class UserManagerIoc
 {
     public static IServiceCollection RegisterUserManager(this IServiceCollection services,string connectionString)
     {
+        services.AddScoped<ApplicationDbContext, ApplicationDbContext>();
         services.AddDbContext<UserManagerDbContext>(options =>
         {
             options.UseSqlServer(connectionString);

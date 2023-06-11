@@ -43,13 +43,8 @@ namespace Infrastructure.BaseUserManager.Models
             Guid user2 = Guid.NewGuid();
             modelBuilder.Entity<User>().HasQueryFilter(c => !c.IsDeleted).HasData(new User[]
             {
-                new User { Id=Guid.NewGuid(),Name = "Admin",UserType = new UserType
-                    {
-                    Id = user1,
-                    Name = "People",
-                    }
-                },
-                new User { Id = user2,Name = "SupportUser"},
+                new User { Id=user1,Name = "Admin",UserTypeId = Usertype1},
+                new User { Id = user2,Name = "SupportUser",UserTypeId = Usertype1},
             });
 
             modelBuilder.Entity<UserGroup>().HasQueryFilter(c => !c.IsDeleted).HasData(new UserGroup[]
@@ -75,7 +70,8 @@ namespace Infrastructure.BaseUserManager.Models
                 new Feature { Id= feature6,Name = "MobileNumber" },
             });
 
-            modelBuilder.Entity<UserFeature>().HasQueryFilter(c => !c.IsDeleted).HasData(new UserFeature[]
+            modelBuilder.Entity<UserFeature>()
+                .HasQueryFilter(c => !c.IsDeleted).HasData(new UserFeature[]
             {
                 new UserFeature { Id= Guid.NewGuid(), Name="FullName",UserId = user1,FeatureId = feature1,Value = "Administrator" },
                 new UserFeature { Id=Guid.NewGuid(), Name="e-Mail",UserId = user1,FeatureId = feature5,Value = "Admin@MyServices.com" },
@@ -85,7 +81,7 @@ namespace Infrastructure.BaseUserManager.Models
                 new UserFeature { Id=Guid.NewGuid(), Name="e-Mail",UserId = user2,FeatureId = feature5,Value = "Support@MyServices.com" },
                 new UserFeature { Id=Guid.NewGuid(), Name="MobileNumber",UserId = user2,FeatureId = feature6,Value = "+9898765432102" },
             });
-            modelBuilder.Entity<UserFeature>().HasIndex(c => new { c.User, c.FeatureId });
+            modelBuilder.Entity<UserFeature>().HasIndex(c => new { c.UserId, c.FeatureId });
 
 
             

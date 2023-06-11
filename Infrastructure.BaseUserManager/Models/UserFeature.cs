@@ -12,12 +12,12 @@ namespace Infrastructure.BaseUserManager.Models
         [ForeignKey(nameof(User))]
         public Guid UserId { get; set; }
         [JsonIgnore]
-        public virtual User User { get; set; }
+        public User User { get; set; }
 
         [ForeignKey(nameof(Feature))]
         public Guid FeatureId { get; set; }
         [JsonIgnore]
-        public virtual Feature Feature { get; set; }
+        public Feature Feature { get; set; }
 
         public string Value { get; set; } = string.Empty;
     }
